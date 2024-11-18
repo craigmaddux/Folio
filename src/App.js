@@ -12,6 +12,8 @@ import { AuthProvider } from './context/AuthContext';
 import Library from './components/Library';
 import ProtectedRoute from './components/ProtectedRoute';
 import Footer from './components/Footer';
+import AuthorDashboard from './components/AuthorDashboard';
+
 
 function AppContent() {
   const location = useLocation();
@@ -32,9 +34,18 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/author-dashboard"
+            element={
+              <ProtectedRoute>
+                <AuthorDashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/books/:bookId" element={<BookProduct />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignupForm />} />
+          <Route path="/author-signup" element={<SignupForm isAuthor={true} />} />
           <Route
             path="/library"
             element={
@@ -52,12 +63,13 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </AuthProvider>
+    <Router>
+      <AuthProvider>
+          <AppContent />
+      </AuthProvider>
+    </Router>
   );
 }
+
 
 export default App;

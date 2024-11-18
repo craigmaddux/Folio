@@ -1,41 +1,41 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isAuthor, setIsAuthor] = useState(false);
+  const navigate = useNavigate();
 
-  // Restore user from localStorage on app load
-  
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser); // Safely parse stored user
-        setUser(parsedUser);
-      } catch (error) {
-        console.error('Error parsing user data from localStorage:', error.message);
-        localStorage.removeItem('user'); // Clean up corrupted data
-      }
+    // Check if user is already logged in
+    const loggedInUser = localStorage.getItem('user');
+    const authorStatus = localStorage.getItem('isAuthor') === 'true';
+    if (loggedInUser) {
+      setUser(JSON.parse(loggedInUser));
+      setIsAuthor(authorStatus);
     }
   }, []);
-  
 
-  // Save user to localStorage on login
-  const login = (userData) => {
+  const login = (userData, authorStatus) => {
     setUser(userData);
-    console.log(userData);
+    setIsAuthor(authorStatus);
     localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('isAuthor', authorStatus);
+    navigate('/dashboard');
   };
 
-  // Remove user from localStorage on logout
   const logout = () => {
     setUser(null);
+    setIsAuthor(false);
     localStorage.removeItem('user');
+    localStorage.removeItem('isAuthor');
+    navigate('/login');
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthor, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

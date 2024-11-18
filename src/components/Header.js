@@ -1,11 +1,12 @@
 // src/components/Header.js
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import AuthContext from '../context/AuthContext';
 import './Header.css';
 
 const Header = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, isAuthor } = useContext(AuthContext);
   const navigate = useNavigate();
 
   return (
@@ -24,6 +25,7 @@ const Header = () => {
               <span className="header-username" onClick={() => navigate('/library')}>
                 Welcome, {user.username}!
               </span>
+              {isAuthor && <Link to="/author-dashboard">Author Dashboard</Link>}
               <button className="header-button" onClick={logout}>Logout</button>
             </>
           ) : (
