@@ -1,0 +1,37 @@
+.book-reader {
+  display: flex; /* Flexbox layout for side-by-side alignment */
+  justify-content: center; /* Center the pages horizontally */
+  align-items: center; /* Center the pages vertically */
+  height: 100vh; /* Full height of the viewport */
+  gap: 20px; /* Add space between pages */
+  padding: 10px;
+  background-color: #fdf6e3; /* Light book-like background */
+}
+
+.page {
+  width: 45%; /* Explicitly define page width to prevent stacking */
+  height: 90%; /* Pages take up most of the viewport height */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  overflow-y: auto; /* Allow scrolling within each page if needed */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.left-page {
+  text-align: justify; /* Ensure text alignment for readability */
+}
+
+.right-page {
+  text-align: justify; /* Ensure text alignment for readability */
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}

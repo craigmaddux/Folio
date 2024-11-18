@@ -1,38 +1,73 @@
+/* Ensure the root layout spans the full page height and stacks content vertically */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Full viewport height */
+  display: flex;
+  flex-direction: column; /* Stack header, content, and footer vertically */
+}
+
+/* App container */
 .App {
+  flex: 1; /* Allow .App to stretch and fill space between header and footer */
+  display: flex;
+  flex-direction: column; /* Stack main-content and footer vertically */
+}
+
+.main-content {
+  flex: 1; /* Stretch to fill remaining space */
+  width: 100%; /* Ensure it spans the full width */
+  margin-top: 100px; /* Increase spacing from the header */
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  align-items: flex-start; /* Align content to the top */
+  box-sizing: border-box;
+}
+
+
+/* Home panel or any content within main-content */
+.home-panel {
+  width: 100%; /* Take up full width */
+  max-width: 1200px; /* Optional: limit content width for readability */
+  padding: 20px;
+  box-sizing: border-box; /* Include padding in the width calculation */
+}
+
+/* Header stays at the top */
+.home-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Flex-grow on main to fill remaining space */
+.home-main {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-content {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 0.5em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+p {
+  font-size: 1.25em;
+  color: #555;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Footer styling */
+.footer {
+  background-color: #222;
+  color: #fff;
+  padding: 15px 0;
+  text-align: center;
+  width: 100%; /* Stretch across full width */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
