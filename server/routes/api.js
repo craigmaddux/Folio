@@ -2,8 +2,11 @@
 const express = require('express');
 const { body } = require('express-validator');
 const {signup, getUserLibrary} = require('../controllers/UserController');
-const { validateLogin } = require('../controllers/AuthController');
+const { validateLogin, authorSignup } = require('../controllers/AuthController');
+const BookController = require('../controllers/BookController');
 const { recordPurchase } = require('../controllers/PurchaseController');
+const multer = require('multer');
+
 const {
   getBookContent,
   saveReadingProgress,
@@ -11,7 +14,7 @@ const {
   fetchBooks
 } = require('../controllers/BookController');
 const db = require('../db'); // Adjust this path if db.js is located elsewhere
-
+const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
 
 router.post(
@@ -28,10 +31,17 @@ router.post(
   signup
 );
 
+router.post(
+  '/books/upload',
+  upload.fields([{ name: 'cover' }, { name: 'content' }]),
+  BookController.uploadBook
+);
+
 router.get('/books', fetchBooks); // Delegate to the controller
 router.get('/books/:bookId/content', getBookContent);
 router.post('/books/:bookId/progress', saveReadingProgress);
 router.get('/books/:bookId/progress', getReadingProgress);
+router.post('/author/signup', authorSignup);
 
 router.get('/books/:id', async (req, res) => {
   const { id } = req.params;

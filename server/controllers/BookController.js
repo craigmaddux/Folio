@@ -1,4 +1,6 @@
 const db = require('../db'); // Database connection
+const multer = require('multer');
+const path = require('path');
 
 // Fetch books (general or user-purchased)
 const fetchBooks = async (req, res) => {
@@ -69,6 +71,39 @@ const getBookContent = async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
+
+
+
+// Configure multer for file uploads
+const upload = multer({
+  dest: 'uploads/',
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB limit
+});
+
+const uploadBook = async (req, res) => {
+  const { title, price, genre } = req.body;
+
+  if (!req.files || !req.files.cover || !req.files.content) {
+    return res.status(400).json({ message: 'Cover and content files are required.' });
+  }
+
+  const cover = req.files.cover[0];
+  const content = req.files.content[0];
+
+  try {
+    await db.query(
+      'INSERT INTO books (name, price, genre, cover_image_url, content_file_url) VALUES ($1, $2, $3, $4, $5)',
+      [title, price, genre, `/uploads/${cover.filename}`, `/uploads/${content.filename}`]
+    );
+    res.status(201).json({ message: 'Book uploaded successfully!' });
+  } catch (error) {
+    console.error('Error uploading book:', error);
+    res.status(500).json({ message: 'Failed to upload book.' });
+  }
+};
+
+
+
   
   // Save reading progress
   const saveReadingProgress = async (req, res) => {
@@ -119,5 +154,6 @@ const getBookContent = async (req, res) => {
     getBookContent,
     saveReadingProgress,
     getReadingProgress,
-    fetchBooks
+    fetchBooks,
+    uploadBook
   };

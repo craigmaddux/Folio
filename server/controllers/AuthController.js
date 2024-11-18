@@ -38,7 +38,45 @@ const validateLogin = async (username, password) => {
     throw new Error('Login failed');
   }
 };
+  // Controller for Author Sign-Up
+const authorSignup = async (req, res) => {
+  const { username, email, password } = req.body;
+
+  try {
+    // Check if username or email already exists
+    const existingAuthor = await db.query(
+      'SELECT * FROM authors WHERE username = $1 OR email = $2',
+      [username, email]
+    );
+
+    if (existingAuthor.rows.length > 0) {
+      return res
+        .status(400)
+        .json({ message: 'Username or email already in use' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert the new author into the database
+    const result = await db.query(
+      'INSERT INTO authors (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id',
+      [username, email, hashedPassword]
+    );
+
+    return res.status(201).json({
+      message: 'Author account created successfully',
+      authorId: result.rows[0].id,
+    });
+  } catch (error) {
+    console.error('Error during author sign-up:', error.message);
+    return res
+      .status(500)
+      .json({ message: 'Failed to create author account', error: error.message });
+  }
+
+};
 
 module.exports = {
-  validateLogin,
+  validateLogin, authorSignup
 };
