@@ -13,6 +13,7 @@ import Library from './components/Library';
 import ProtectedRoute from './components/ProtectedRoute';
 import Footer from './components/Footer';  
 import AuthorDashboard from './components/AuthorDashboard';
+import AuthorProfile from './components/AuthorProfile';
 
 
 function AppContent() {
@@ -35,8 +36,17 @@ function AppContent() {
             }
           />
           <Route
-            path="/author-dashboard"
+            path="/profile"
             element={
+              <ProtectedRoute>
+                <AuthorProfile />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/author-dashboard"
+            element={ 
               <ProtectedRoute>
                 <AuthorDashboard />
               </ProtectedRoute>

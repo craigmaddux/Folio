@@ -28,4 +28,72 @@
     color: #555;
     font-size: 1rem;
   }
+
+  /* Warning Box */
+.warning-box {
+  background-color: #ffe6e6; /* Light red */
+  border: 1px solid #ff4d4d; /* Bright red */
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  color: #a94442; /* Dark red for text */
+  font-size: 1rem;
+}
+
+.warning-box p {
+  margin: 0;
+}
+
+.profile-link {
+  display: inline-block;
+  margin-top: 10px;
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.profile-link:hover {
+  background-color: #cc0000;
+}
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.upload-form label {
+  font-weight: bold;
+}
+
+.upload-form input,
+.upload-form textarea {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.upload-form button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.upload-form button:hover {
+  background-color: #0056b3;
+}
+
+.message {
+  margin-top: 15px;
+  color: green;
+}
+
   

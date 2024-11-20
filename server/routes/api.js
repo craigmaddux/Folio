@@ -6,6 +6,8 @@ const { validateLogin, authorSignup } = require('../controllers/AuthController')
 const BookController = require('../controllers/BookController');
 const { recordPurchase } = require('../controllers/PurchaseController');
 const multer = require('multer');
+const AuthorController = require('../controllers/AuthorController');
+const BankController = require('./controllers/BankController');
 
 const {
   getBookContent,
@@ -36,12 +38,17 @@ router.post(
   upload.fields([{ name: 'cover' }, { name: 'content' }]),
   BookController.uploadBook
 );
-
+router.get('/authors/:userId', AuthorController.getAuthorProfile);
+router.post('/authors/:userId', AuthorController.upsertAuthorProfile);
 router.get('/books', fetchBooks); // Delegate to the controller
 router.get('/books/:bookId/content', getBookContent);
 router.post('/books/:bookId/progress', saveReadingProgress);
 router.get('/books/:bookId/progress', getReadingProgress);
 router.post('/author/signup', authorSignup);
+router.get('/authors/:userId/exists', AuthorController.checkAuthorProfile);
+// Banking APIs
+router.post('/authors/bank-details', BankController.addOrUpdateBankDetails);
+router.get('/authors/bank-details', BankController.getBankDetails);
 
 router.get('/books/:id', async (req, res) => {
   const { id } = req.params;

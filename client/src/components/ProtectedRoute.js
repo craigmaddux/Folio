@@ -4,19 +4,12 @@ import { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
-  const { user, isAuthor } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   if (!user) {
     return <Navigate to="/login" />;
   }
 
-  // If the route requires author access, ensure isAuthor is true
-  const isAuthorPage = window.location.pathname.startsWith('/author-dashboard');
-  if (isAuthorPage && !isAuthor) {
-    return <Navigate to="/" />;
-  }
-
   return children;
 };
-
 export default ProtectedRoute;
