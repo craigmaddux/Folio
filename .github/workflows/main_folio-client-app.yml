@@ -67,5 +67,5 @@ jobs:
         with:
           app-name: 'folio-client-app'
           slot-name: 'Production'
-          package: ./client
+          package: ./client/build
           
