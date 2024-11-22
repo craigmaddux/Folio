@@ -68,5 +68,5 @@ jobs:
         with:
           app-name: 'folio-server-app'
           slot-name: 'Production'
-          package: ./server/build
+          package: ./server
           
