@@ -1,26 +1,26 @@
 // server/routes/api.js
 const express = require('express');
 const { body } = require('express-validator');
-const {signup, getUserLibrary} = require('../controllers/UserController');
-const { validateLogin, authorSignup } = require('../controllers/AuthController');
-const BookController = require('../controllers/BookController');
-const { recordPurchase } = require('../controllers/PurchaseController');
 const multer = require('multer');
+
+const UserController = require('../controllers/UserController');
+const AuthController = require('../controllers/AuthController');
+const BookController = require('../controllers/BookController');
+const PurchaseController = require('../controllers/PurchaseController');
 const AuthorController = require('../controllers/AuthorController');
 const BankController = require('../controllers/BankController');
 const PaymentController = require('../controllers/PaymentController');
 const ContentController = require('../controllers/ContentController');
 
-const {
-  getBookContent,
-  saveReadingProgress,
-  getReadingProgress,
-  fetchBooks
-} = require('../controllers/BookController');
-const db = require('../db'); // Adjust this path if db.js is located elsewhere
-const upload = multer({ dest: 'uploads/' });
+const db = require('../db'); // Database connection
 const router = express.Router();
 
+// Configure multer for file uploads
+const upload = multer({ dest: 'uploads/' });
+
+/** ================== User Routes ================== */
+
+// User Signup with validation
 router.post(
   '/signup',
   [
@@ -28,37 +28,53 @@ router.post(
     body('email').isEmail().normalizeEmail(),
     body('password').isLength({ min: 6 }).trim(),
   ],
-  (req, res, next) => {
-    console.log('Received body in /signup route:', req.body); // Log here first
-    next();
-  }, 
-  signup
+  UserController.signup
 );
 
+// User Login
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const result = await AuthController.validateLogin(username, password);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Login error:', error.message);
+    res.status(401).json({ message: error.message });
+  }
+});
+
+// Fetch User Library
+router.get('/library/:username', async (req, res) => {
+  const { username } = req.params;
+  try {
+    const books = await UserController.getUserLibrary(username);
+    res.status(200).json(books);
+  } catch (error) {
+    console.error('Error fetching user library:', error);
+    res.status(500).json({ message: 'Failed to fetch library' });
+  }
+});
+
+/** ================== Book Routes ================== */
+
+// Fetch all books
+router.get('/books', BookController.fetchBooks);
+
+// Fetch book content by ID
+router.get('/books/:bookId/content', BookController.getBookContent);
+
+// Save and retrieve reading progress
+router.post('/books/:bookId/progress', BookController.saveReadingProgress);
+router.get('/books/:bookId/progress', BookController.getReadingProgress);
+
+// Upload a new book
 router.post(
   '/books/upload',
   upload.fields([{ name: 'cover' }, { name: 'content' }]),
   BookController.uploadBook
 );
-router.get('/authors/:userId', AuthorController.getAuthorProfile);
-router.post('/authors/:userId', AuthorController.upsertAuthorProfile);
-router.get('/books', fetchBooks); // Delegate to the controller
-router.get('/books/:bookId/content', getBookContent);
-router.post('/books/:bookId/progress', saveReadingProgress);
-router.get('/books/:bookId/progress', getReadingProgress);
-router.post('/author/signup', authorSignup);
-router.get('/authors/:userId/exists', AuthorController.checkAuthorProfile);
-// Banking APIs
-router.post('/authors/bank-details', BankController.addOrUpdateBankDetails);
-// Route to serve HTML content
-router.get('/content', ContentController.getContent);
-// Route to initiate credit purchase
-router.post('/purchase-credits', PaymentController.purchaseCredits);
-// Route to confirm credit purchase
-router.post('/confirm-purchase', PaymentController.confirmPurchase);
-router.post('/create-payment-intent', PaymentController.purchaseCredits);
-router.get('/authors/bank-details', BankController.getBankDetails);
 
+// Fetch details of a single book
 router.get('/books/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -76,63 +92,44 @@ router.get('/books/:id', async (req, res) => {
   }
 });
 
-// Fetch details of a single book by ID
-router.get('/reader/:id', async (req, res) => {
-  const bookId = req.params.id;
-  console.log("retrieving book id: " + bookId);
-  try {
-    const result = await db.query(
-      'SELECT id, name, content, author, cover_image_url, cover_image_alt, price, description FROM books WHERE id = $1',
-      [bookId]
-    );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'Book not found' });
-    }
-    res.json(result.rows[0]);
-  } catch (error) {
-    console.error('Error fetching book details:', error);
-    res.status(500).json({ message: 'Failed to fetch book details' });
-  }
-});
+/** ================== Purchase Routes ================== */
 
-// Purchase API endpoint
+// Purchase credits
+router.post('/purchase-credits', PaymentController.purchaseCredits);
+router.post('/confirm-purchase', PaymentController.confirmPurchase);
+
+// Record a book purchase
 router.post('/purchase', async (req, res) => {
   const { userId, bookId, purchasePrice } = req.body;
-  console.log("Data:" + JSON.stringify(req.body));
   try {
-    console.log(userId + " " + bookId + " " + purchasePrice);
-    // Call the controller function to record the purchase
-    const result = await recordPurchase(userId, bookId, purchasePrice);
+    const result = await PurchaseController.recordPurchase(
+      userId,
+      bookId,
+      purchasePrice
+    );
     res.status(201).json(result);
   } catch (error) {
-    console.error('Error:', error.message);
+    console.error('Error recording purchase:', error.message);
     res.status(500).json({ message: error.message });
   }
 });
 
-// Login API endpoint
-router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+/** ================== Author Routes ================== */
 
-  try {
-    const result = await validateLogin(username, password);
-    res.status(200).json(result);
-  } catch (error) {
-    console.error('Login error:', error.message);
-    res.status(401).json({ message: error.message });
-  }
-});
+// Author profile management
+router.get('/authors/:userId', AuthorController.getAuthorProfile);
+router.post('/authors/:userId', AuthorController.upsertAuthorProfile);
 
-// Library API endpoint to get the user's purchased books
-router.get('/library/:username', async (req, res) => {
-  const { username } = req.params;
+// Author profile existence check
+router.get('/authors/:userId/exists', AuthorController.checkAuthorProfile);
 
-  try {
-    const books = await getUserLibrary(username);
-    res.status(200).json(books);
-  } catch (error) {
-    console.error('Error fetching user library:', error);
-    res.status(500).json({ message: 'Failed to fetch library' });
-  }
-});
+// Bank details management
+router.post('/authors/bank-details', BankController.addOrUpdateBankDetails);
+router.get('/authors/bank-details', BankController.getBankDetails);
+
+/** ================== Miscellaneous Routes ================== */
+
+// Serve HTML content dynamically
+router.get('/content', ContentController.getContent);
+
 module.exports = router;
