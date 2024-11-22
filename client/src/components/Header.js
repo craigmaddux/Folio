@@ -43,6 +43,9 @@ const Header = () => {
               <span className="dropdown-item" onClick={() => navigate('/library')}>
                 View Library
               </span>
+              <span className="dropdown-item" onClick={() => navigate('/purchase-credits')}>
+                Purchase Credits
+              </span>
               <span className="dropdown-item" onClick={() => navigate('/author-dashboard')}>
                 Author Dashboard
               </span>

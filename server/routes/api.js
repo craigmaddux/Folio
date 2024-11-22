@@ -7,7 +7,9 @@ const BookController = require('../controllers/BookController');
 const { recordPurchase } = require('../controllers/PurchaseController');
 const multer = require('multer');
 const AuthorController = require('../controllers/AuthorController');
-const BankController = require('./controllers/BankController');
+const BankController = require('../controllers/BankController');
+const PaymentController = require('../controllers/PaymentController');
+const ContentController = require('../controllers/ContentController');
 
 const {
   getBookContent,
@@ -48,6 +50,13 @@ router.post('/author/signup', authorSignup);
 router.get('/authors/:userId/exists', AuthorController.checkAuthorProfile);
 // Banking APIs
 router.post('/authors/bank-details', BankController.addOrUpdateBankDetails);
+// Route to serve HTML content
+router.get('/content', ContentController.getContent);
+// Route to initiate credit purchase
+router.post('/purchase-credits', PaymentController.purchaseCredits);
+// Route to confirm credit purchase
+router.post('/confirm-purchase', PaymentController.confirmPurchase);
+router.post('/create-payment-intent', PaymentController.purchaseCredits);
 router.get('/authors/bank-details', BankController.getBankDetails);
 
 router.get('/books/:id', async (req, res) => {

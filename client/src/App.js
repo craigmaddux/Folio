@@ -14,6 +14,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Footer from './components/Footer';  
 import AuthorDashboard from './components/AuthorDashboard';
 import AuthorProfile from './components/AuthorProfile';
+import PurchaseCreditsPage from './components/PurchaseCreditsPage';
+
 
 
 function AppContent() {
@@ -27,6 +29,7 @@ function AppContent() {
       <div className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/purchase-credits" element={<PurchaseCreditsPage />} />
           <Route
             path="/reader/:bookId"
             element={
