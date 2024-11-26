@@ -50,7 +50,12 @@ jobs:
           name: client-app
 
       - name: Unzip artifact
-        run: unzip release.zip -d wwwroot
+        run: unzip release.zip -d temp
+
+      - name: Move files to wwwroot
+        run: |
+          mkdir -p wwwroot
+          mv temp/client/build/* wwwroot/
 
       - name: Login to Azure
         uses: azure/login@v2
