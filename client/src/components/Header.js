@@ -28,9 +28,9 @@ const Header = () => {
       <div className="header-content">
         <div className="header-branding">
           <Link to="/" className="header-logo">
-            <h1>Folio</h1>
+            <h1>LeafQuill</h1>
           </Link>
-          <p>Discover, browse, and read your favorite books online.</p>
+          <p>Discover and read your favorite books and authors online.</p>
         </div>
         {user && (
           <div className="header-actions">

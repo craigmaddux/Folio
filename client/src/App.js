@@ -15,6 +15,8 @@ import Footer from './components/Footer';
 import AuthorDashboard from './components/AuthorDashboard';
 import AuthorProfile from './components/AuthorProfile';
 import PurchaseCreditsPage from './components/PurchaseCreditsPage';
+import Checkout from './components/CheckoutPage';
+import PaymentSuccessPage from './components/PaymentSuccessPage'; 
 
 
 
@@ -29,12 +31,21 @@ function AppContent() {
       <div className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/payment-success" element={<PaymentSuccessPage />} />
           <Route path="/purchase-credits" element={<PurchaseCreditsPage />} />
           <Route
             path="/reader/:bookId"
             element={
               <ProtectedRoute>
                 <BookReader />
+              </ProtectedRoute>
+            }
+          />
+           <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <Checkout />
               </ProtectedRoute>
             }
           />

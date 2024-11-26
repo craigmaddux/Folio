@@ -1,109 +1,60 @@
-import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import AuthContext from '../context/AuthContext';
+import ePub from 'epubjs';
 import './BookReader.css';
 
 const BookReader = () => {
-  const { bookId } = useParams();
-  const { user } = useContext(AuthContext);
-  const [content, setContent] = useState('');
-  const [currentPosition, setCurrentPosition] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [fontSize, setFontSize] = useState(18);
-  const [charactersPerPage, setCharactersPerPage] = useState(1000);
-
-  const bookReaderRef = useRef();
-
-  const CHUNK_SIZE = 10000;
-
-  const fetchProgress = useCallback(async () => {
-    if (!user) {
-      setError('User is not logged in.');
-      return 0;
-    }
-
-    try {
-      const response = await fetch(
-        `/api/books/${bookId}/progress?userId=${user.id}`
-      );
-      if (!response.ok) {
-        throw new Error('Failed to fetch reading progress');
-      }
-      const data = await response.json();
-      return data.lastReadPosition || 0;
-    } catch (err) {
-      console.error('Error fetching progress:', err.message);
-      setError('Failed to fetch progress.');
-      return 0;
-    }
-  }, [bookId, user]);
-
-  const fetchContent = useCallback(async (position) => {
-    try {
-      const response = await fetch(
-        `/api/books/${bookId}/content?start=${position}&length=${CHUNK_SIZE}`
-      );
-      if (!response.ok) {
-        throw new Error('Failed to fetch book content');
-      }
-      const data = await response.json();
-      setContent(data.content);
-      setCurrentPosition(position);
-    } catch (err) {
-      console.error('Error fetching content:', err.message);
-      setError('Failed to fetch book content.');
-    } finally {
-      setLoading(false);
-    }
-  }, [bookId]);
+  const { bookId } = useParams(); // Get the book ID from the URL
+  const viewerRef = useRef(null);
+  const renditionRef = useRef(null);
+  const [fontSize, setFontSize] = useState(16);
 
   useEffect(() => {
-    const initializeReader = async () => {
-      setLoading(true);
-      const lastReadPosition = await fetchProgress();
-      await fetchContent(lastReadPosition);
+    if (!bookId) {
+      console.error('Book ID is required');
+      return;
+    }
+
+    const viewerElement = viewerRef.current;
+
+    const book = ePub(`/api/read/${bookId}.epub`);
+
+    const rendition = book.renderTo(viewerElement, {
+      width: '100%',
+      height: '100%',
+      manager: 'continuous',
+      flow: 'paginated', // Ensures proper pagination behavior
+    });
+
+    renditionRef.current = rendition;
+
+    rendition.themes.fontSize(`${fontSize}px`);
+    rendition.display();
+
+    return () => {
+      rendition.destroy();
+      book.destroy();
     };
+  }, [bookId, fontSize]);
 
-    initializeReader();
-  }, [fetchContent, fetchProgress]);
+  const handleNext = () => renditionRef.current?.next();
+  const handlePrevious = () => renditionRef.current?.prev();
 
-  useEffect(() => {
-    if (bookReaderRef.current) {
-      const page = bookReaderRef.current;
-      const pageHeight = page.offsetHeight;
-      const lineHeight = parseFloat(getComputedStyle(page).lineHeight);
-      const linesPerPage = Math.floor(pageHeight / lineHeight);
-      const averageCharsPerLine = Math.floor(page.offsetWidth / 10);
-      const newCharactersPerPage = linesPerPage * averageCharsPerLine;
-
-      setCharactersPerPage(newCharactersPerPage);
-    }
-  }, [fontSize, content]);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-
-  const startIdx = currentPosition * charactersPerPage;
-  const visibleContent = content.slice(startIdx, startIdx + charactersPerPage * 2);
-  const leftPage = visibleContent.slice(0, charactersPerPage);
-  const rightPage = visibleContent.slice(charactersPerPage);
-
-  const handleNextPage = () => {
-    const maxPages = Math.ceil(content.length / charactersPerPage / 2);
-    if (currentPosition < maxPages - 1) {
-      setCurrentPosition((prev) => prev + 1);
-    }
+  const increaseFontSize = () => {
+    setFontSize((prev) => {
+      const newSize = Math.min(prev + 2, 36);
+      renditionRef.current?.themes.fontSize(`${newSize}px`);
+      return newSize;
+    });
   };
 
-  const handlePreviousPage = () => {
-    if (currentPosition > 0) {
-      setCurrentPosition((prev) => prev - 1);
-    }
+  const decreaseFontSize = () => {
+    setFontSize((prev) => {
+      const newSize = Math.max(prev - 2, 12);
+      renditionRef.current?.themes.fontSize(`${newSize}px`);
+      return newSize;
+    });
   };
-
-  const increaseFontSize = () => setFontSize((prev) => Math.min(prev + 2, 36));
-  const decreaseFontSize = () => setFontSize((prev) => Math.max(prev - 2, 12));
 
   return (
     <div className="book-reader">
@@ -112,30 +63,20 @@ const BookReader = () => {
         <span className="book-reader__label">Font Size</span>
         <button onClick={increaseFontSize}>A+</button>
       </div>
-      <div className="book-reader__pages">
-        <div
-          ref={bookReaderRef}
-          className="book-reader__page book-reader__page--left"
-          style={{ fontSize: `${fontSize}px` }}
-        >
-          {leftPage}
-        </div>
-        <div
-          className="book-reader__page book-reader__page--right"
-          style={{ fontSize: `${fontSize}px` }}
-        >
-          {rightPage}
-        </div>
-        <div
-          className="book-reader__prev"
-          onClick={handlePreviousPage}
-          aria-label="Previous Page"
-        ></div>
-        <div
-          className="book-reader__next"
-          onClick={handleNextPage}
-          aria-label="Next Page"
-        ></div>
+      <div
+        className="book-reader__nav book-reader__nav--left"
+        onClick={handlePrevious}
+        aria-label="Previous Page"
+      >
+        <span className="book-reader__arrow"></span>
+      </div>
+      <div id="viewer" ref={viewerRef} className="book-reader__viewer"></div>
+      <div
+        className="book-reader__nav book-reader__nav--right"
+        onClick={handleNext}
+        aria-label="Next Page"
+      >
+        <span className="book-reader__arrow"></span>
       </div>
     </div>
   );

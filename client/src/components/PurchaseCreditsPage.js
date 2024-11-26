@@ -1,117 +1,82 @@
 // src/components/PurchaseCreditsPage.js
-import React, { useState, useEffect, useCallback } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './PurchaseCreditsPage.css';
 
-// Initialize Stripe with your publishable key
-const stripePromise = loadStripe('your-publishable-key-here');
+const PurchaseCreditsPage = () => {
+  const navigate = useNavigate();
 
-const PurchaseCreditsForm = ({ credits, amount }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [isProcessing, setIsProcessing] = useState(false);
+  // State to track the number of credits selected
+  const [creditCounts, setCreditCounts] = useState({
+    5: 0,
+    20: 0,
+    40: 0,
+  });
 
-  const handlePurchase = async (e) => {
-    e.preventDefault();
-    setIsProcessing(true);
+  // Calculate total credits and total cost
+  const totalCredits = Object.entries(creditCounts).reduce(
+    (sum, [key, value]) => sum + parseInt(key) * value,
+    0
+  );
 
-    try {
-      const { error } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/payment-success`,
-        },
-      });
+  const totalCost = Object.entries(creditCounts).reduce(
+    (sum, [key, value]) => sum + value * parseInt(key),
+    0
+  );
 
-      if (error) {
-        console.error('Payment Error:', error.message);
-        alert('Payment failed. Please try again.');
-      } else {
-        console.log('Payment successful!');
-      }
-    } catch (err) {
-      console.error('Unexpected error during payment:', err.message);
-      alert('An unexpected error occurred. Please try again later.');
-    }
+  const handleCreditChange = (type, value) => {
+    setCreditCounts((prev) => ({
+      ...prev,
+      [type]: value,
+    }));
+  };
 
-    setIsProcessing(false);
+  const handleCheckout = () => {
+    navigate('/checkout', { state: { creditCounts, totalCredits, totalCost } });
   };
 
   return (
-    <form onSubmit={handlePurchase}>
-      <PaymentElement />
-      <button disabled={!stripe || isProcessing} type="submit">
-        {isProcessing ? 'Processing...' : `Buy ${credits} Credits for $${amount}`}
-      </button>
-    </form>
-  );
-};
-
-const PurchaseCreditsPage = () => {
-  const [clientSecret, setClientSecret] = useState('');
-  const [selectedOption, setSelectedOption] = useState({ credits: 20, amount: 20 });
-
-  // Fetch Payment Intent API
-  const fetchPaymentIntent = useCallback(async () => {
-    try {
-      const response = await fetch('/api/purchase-credits', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: 'user-id-placeholder', // Replace with actual user ID
-          credits: selectedOption.credits,
-          amount: selectedOption.amount,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch payment intent: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      setClientSecret(data.clientSecret);
-    } catch (error) {
-      console.error('Error fetching payment intent:', error.message);
-      alert('Failed to initialize payment. Please try again later.');
-    }
-  }, [selectedOption]);
-
-  // Re-fetch payment intent when the selected option changes
-  useEffect(() => {
-    fetchPaymentIntent();
-  }, [fetchPaymentIntent]);
-
-  const options = clientSecret ? { clientSecret } : null;
-
-  return (
-    <div>
+    <div className="purchase-credits-container">
       <h1>Purchase Credits</h1>
-      <div>
-        <label htmlFor="credits-select">Choose your credit package:</label>
-        <select
-          id="credits-select"
-          onChange={(e) => {
-            const value = e.target.value;
-            setSelectedOption(
-              value === '40'
-                ? { credits: 40, amount: 40 }
-                : { credits: 20, amount: 20 }
-            );
-          }}
-        >
-          <option value="20">20 Credits for $20</option>
-          <option value="40">40 Credits for $40</option>
-        </select>
-      </div>
+      <table className="credits-table">
+        <thead>
+          <tr>
+            <th>Credit Package</th>
+            <th>Price per Package</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[5, 20, 40].map((type) => (
+            <tr key={type}>
+              <td>{type} Credits</td>
+              <td>${type}</td>
+              <td>
+                <select
+                  value={creditCounts[type]}
+                  onChange={(e) => handleCreditChange(type, parseInt(e.target.value, 10))}
+                >
+                  <option value={0}>0</option>
+                  {[...Array(10)].map((_, i) => (
+                    <option key={i + 1} value={i + 1}>
+                      {i + 1}
+                    </option>
+                  ))}
+                </select>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-      {clientSecret && (
-        <Elements stripe={stripePromise} options={options}>
-          <PurchaseCreditsForm
-            credits={selectedOption.credits}
-            amount={selectedOption.amount}
-          />
-        </Elements>
-      )}
+      <div className="summary-section">
+        <h2>Summary</h2>
+        <p>Total Credits: {totalCredits}</p>
+        <p>Total Cost: ${totalCost.toFixed(2)}</p>
+        <button onClick={handleCheckout} disabled={totalCredits === 0}>
+          Checkout
+        </button>
+      </div>
     </div>
   );
 };

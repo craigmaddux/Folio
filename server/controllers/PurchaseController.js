@@ -15,7 +15,7 @@ const recordPurchase = async (user_id, book_id, price_at_purchase) => {
     );
     return { message: 'Purchase recorded successfully' };
   } catch (error) {
-    console.error('Error recording purchase:', error);
+    
     throw new Error('Failed to record purchase');
   }
 };

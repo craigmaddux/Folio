@@ -60,8 +60,6 @@ router.get('/library/:username', async (req, res) => {
 // Fetch all books
 router.get('/books', BookController.fetchBooks);
 
-// Fetch book content by ID
-router.get('/books/:bookId/content', BookController.getBookContent);
 
 // Save and retrieve reading progress
 router.post('/books/:bookId/progress', BookController.saveReadingProgress);
@@ -97,6 +95,8 @@ router.get('/books/:id', async (req, res) => {
 // Purchase credits
 router.post('/purchase-credits', PaymentController.purchaseCredits);
 router.post('/confirm-purchase', PaymentController.confirmPurchase);
+router.post('/stripe-webhook', express.raw({ type: 'application/json' }), PaymentController.handleWebhook);
+
 
 // Record a book purchase
 router.post('/purchase', async (req, res) => {
@@ -129,7 +129,15 @@ router.get('/authors/bank-details', BankController.getBankDetails);
 
 /** ================== Miscellaneous Routes ================== */
 
-// Serve HTML content dynamically
+// HTML content route
 router.get('/content', ContentController.getContent);
 
+// EPUB metadata route
+router.get('/books/:bookId/metadata', ContentController.getMetadata);
+
+// EPUB chapter content route
+router.get('/books/:bookId/chapters/:chapterId', ContentController.getEpubContent);
+
+// EPUB download route
+router.get('/read/:bookId', ContentController.downloadBook);
 module.exports = router;
