@@ -11,29 +11,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
+      # Step 1: Checkout the code
       - uses: actions/checkout@v4
 
-      # Set up Node.js
+      # Step 2: Set up Node.js
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
 
-      # Install dependencies and build
+      # Step 3: Install dependencies and build the React app
       - name: Install dependencies and build
         run: |
           cd client
           npm install
           npm run build
 
-      # Zip the build folder for deployment
+      # Step 4: Zip the build directory
       - name: Zip artifact for deployment
         run: |
-          cd client/build
-          zip -r ../../../release.zip .
+          zip -r release.zip client/build
+        working-directory: .
 
-      # Upload the artifact
+      # Step 5: Upload the artifact for the deploy step
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -45,18 +45,17 @@ jobs:
     needs: build
 
     steps:
-      # Download the artifact
+      # Step 6: Download the artifact from the build job
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: client-app
 
-      # Unzip the artifact
+      # Step 7: Unzip the artifact
       - name: Unzip artifact
-        run: |
-          unzip release.zip -d wwwroot
+        run: unzip release.zip -d wwwroot
 
-      # Login to Azure
+      # Step 8: Login to Azure
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -64,7 +63,7 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
 
-      # Deploy to Azure Web App
+      # Step 9: Deploy to Azure Web App
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
