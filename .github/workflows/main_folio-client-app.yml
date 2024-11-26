@@ -20,20 +20,20 @@ jobs:
         with:
           node-version: '18.x'
 
-      # Step 3: Install dependencies and build the React app
+      # Step 3: Install dependencies and build
       - name: Install dependencies and build
         run: |
           cd client
           npm install
           npm run build
 
-      # Step 4: Zip the `build` folder for deployment
+      # Step 4: Zip the build folder
       - name: Zip artifact for deployment
         run: |
           cd client/build
-          zip -r ../../release.zip .
+          zip -r ../../../release.zip .
 
-      # Step 5: Upload the artifact for the deploy job
+      # Step 5: Upload artifact for deployment job
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -58,7 +58,8 @@ jobs:
 
       # Step 2: Unzip the artifact
       - name: Unzip artifact for deployment
-        run: unzip release.zip -d build
+        run: |
+          unzip release.zip -d wwwroot
 
       # Step 3: Login to Azure
       - name: Login to Azure
@@ -75,4 +76,4 @@ jobs:
         with:
           app-name: 'folio-client-app'
           slot-name: 'Production'
-          package: ./build
+          package: ./wwwroot
