@@ -2,7 +2,7 @@ name: Build and deploy React app to Azure Web App - folio-client-app
 
 on:
   push:
-    branches:
+    branches: 
       - main
   workflow_dispatch:
 
