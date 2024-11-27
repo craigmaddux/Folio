@@ -4,7 +4,7 @@ const express = require('express');
 const db = require('./db'); // Import the db connection
 const app = express();
 app.use(express.json());
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8080;
 
 const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
