@@ -5,6 +5,7 @@ html, body, #root {
   height: 100%; /* Full viewport height */
   display: flex;
   flex-direction: column; /* Stack header, content, and footer vertically */
+  background-color: #E9D5C3;
 }
 
 /* App container */
