@@ -2,7 +2,7 @@
 
 .header {
     background-color: #1D3461;
-    color: #E9D5C3;
+    color: #ACD5D8;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%; /* Ensure header spans full width */
@@ -40,7 +40,7 @@
   
   .header-branding p {
     font-size: 1em;
-    color: #ddd;
+    color: #ACD5D8;;
     margin: 5px 0 0;
   }
   
@@ -51,7 +51,7 @@
   
   .header-button {
     background-color: #ACD5D8;
-    color: #fff;
+    color: #1F487E;
     padding: 8px 16px;
     border-radius: 4px;
     text-decoration: none;
