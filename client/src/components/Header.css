@@ -50,7 +50,7 @@
   }
   
   .header-button {
-    background-color: #28a745;
+    background-color: #ACD5D8;
     color: #fff;
     padding: 8px 16px;
     border-radius: 4px;
@@ -60,7 +60,7 @@
   }
   
   .header-button:hover {
-    background-color: #218838;
+    background-color: #376996;
   }
   
 /* Hamburger Icon */
@@ -79,7 +79,7 @@
 .hamburger-line {
   width: 24px;
   height: 3px;
-  background-color: white; /* Change lines to white */
+  background-color: #E9D5C3; /* Change lines to white */
   border-radius: 3px;
   transition: background-color 0.3s, transform 0.3s;
 }
