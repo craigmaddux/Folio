@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import BookSlider from './BookSlider';
 import AuthContext from '../context/AuthContext';
 import './Home.css';
+import { fetchFromAPI } from './api';
 
 const Home = () => {
   const { user } = useContext(AuthContext); // Access logged-in user
@@ -13,7 +14,7 @@ const Home = () => {
     // Fetch general books
     const fetchGeneralBooks = async () => {
       try {
-        const response = await fetch('/api/books?limit=4');
+        const response = await fetchFromAPI('/books?limit=4');
         const data = await response.json();
         setGeneralBooks(data);
       } catch (err) {
