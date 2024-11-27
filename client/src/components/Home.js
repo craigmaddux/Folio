@@ -14,6 +14,7 @@ const Home = () => {
     // Fetch general books
     const fetchGeneralBooks = async () => {
       try {
+        console.log("Fetching book row...");
         const response = await fetchFromAPI('/books?limit=4');
         const data = await response.json();
         setGeneralBooks(data);
