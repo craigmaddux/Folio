@@ -1,6 +1,6 @@
 // server/controllers/AuthController.js
 const db = require('../db');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const validateLogin = async (username, password) => {
   if (!username || !password) {
