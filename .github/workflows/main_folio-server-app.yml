@@ -67,10 +67,4 @@ jobs:
           app-name: 'folio-server-app'
           slot-name: 'Production'
           package: ./release.zip
-      - name: Force deployment status
-        run: |
-          if [ ! -f ./status.txt ]; then
-            echo "Deployment did not complete. Check logs for issues."
-            exit 1
-          fi
-
+     
