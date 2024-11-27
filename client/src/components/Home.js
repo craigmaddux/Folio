@@ -13,6 +13,7 @@ const Home = () => {
   useEffect(() => {
     // Fetch general books
     const fetchGeneralBooks = async () => {
+      console.log("Fetching book row...");
       try {
         console.log("Fetching book row...");
         const response = await fetchFromAPI('/books?limit=4');

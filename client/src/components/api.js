@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://folio-server-app-ftg0eecmb5dcg9eb.eastus2-01.azurewebsites.net:8-80/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://folio-server-app-ftg0eecmb5dcg9eb.eastus2-01.azurewebsites.net:8080/api';
 
 export const fetchFromAPI = async (endpoint, options = {}) => {
     console.log("Checking url...");
