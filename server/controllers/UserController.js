@@ -19,12 +19,13 @@ const signup = async(req, res) => {
 
     try {
       const { username, email, password } = req.body;
-      console.log("Checking if current user exists.");
+      console.log("Checking if current user exists: " + username);
       const userCheck = await db.query(
         'SELECT id FROM users WHERE username = $1 OR email = $2',
         [username, email]
       );
       if (userCheck.rows.length > 0) {
+        console.log("User exists.");
         return res.status(400).json({ message: 'Username or email already exists' });
       }
       console.log("Inserting user.");
