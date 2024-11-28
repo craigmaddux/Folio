@@ -9,6 +9,9 @@ const pool = new Pool({
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
+  ssl: {
+    rejectUnauthorized: true, // Set to true with valid CA certificate
+  },
 });
 
 // Export the pool for use in queries
