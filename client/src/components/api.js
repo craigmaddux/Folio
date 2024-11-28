@@ -13,6 +13,6 @@ export const fetchFromAPI = async (endpoint, options = {}) => {
   if (!response.ok) {
     throw new Error(`API error: ${response.status}`);
   }
-  console.log(response.json());
-  return response.json();
+  
+  return response;
 };
