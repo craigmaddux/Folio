@@ -9,15 +9,17 @@ const signup = async(req, res) => {
 
     // Validate input data
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       console.log('Validation errors:', errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
-   
+   console.log("Passed error check.");
 
     try {
       const { username, email, password } = req.body;
+      console.log("Checking if current user exists.");
       const userCheck = await db.query(
         'SELECT id FROM users WHERE username = $1 OR email = $2',
         [username, email]
@@ -25,13 +27,13 @@ const signup = async(req, res) => {
       if (userCheck.rows.length > 0) {
         return res.status(400).json({ message: 'Username or email already exists' });
       }
-
+      console.log("Inserting user.");
       const passwordHash = await bcrypt.hash(password, 10);
       const result = await db.query(
         'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id',
         [username, email, passwordHash]
       );
-
+      console.log("Returning success.");
       res.status(201).json({ message: 'User registered successfully', userId: result.rows[0].id });
     } catch (error) {
       console.error('Error registering user:', error);
