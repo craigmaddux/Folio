@@ -2,7 +2,7 @@
 require('dotenv').config(); // Load environment variables from .env file
 const { Pool } = require('pg');
 const fs = require('fs');
-
+console.log("Cert: " + "DigiCertGlobalRootG2.crt.pem");
 // Create a new pool instance to manage connections
 const pool = new Pool({
   user: process.env.PGUSER,
@@ -10,7 +10,7 @@ const pool = new Pool({
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
-  ssl:{ca:fs.readFileSync("DigiCertGlobalRootG2.crt.pem").toString()},
+  ssl:{ca:fs.readFileSync("DigiCertGlobalRootCA.crt").toString()},
  
 });
 
