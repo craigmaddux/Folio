@@ -12,6 +12,17 @@ const pool = new Pool({
  
 });
 
+pool.query('SELECT 1', (err, res) => {
+  if (err) {
+    console.error('Connection error details:', {
+      message: err.message,
+      stack: err.stack,
+      code: err.code,
+    });
+  } else {
+    console.log('Connection successful:', res.rows);
+  }
+});
 // Export the pool for use in queries
 module.exports = {
   query: (text, params) => pool.query(text, params),
