@@ -14,9 +14,10 @@ const signup = async(req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { username, email, password } = req.body;
+   
 
     try {
+      const { username, email, password } = req.body;
       const userCheck = await db.query(
         'SELECT id FROM users WHERE username = $1 OR email = $2',
         [username, email]
