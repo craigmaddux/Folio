@@ -13,7 +13,7 @@ const SignupForm = ({ isAuthor = false }) => {
     specialChar: false,
   });
   const [isFormValid, setIsFormValid] = useState(false);
-  const [isAuthorChecked, setIsAuthorChecked] = useState(isAuthor);
+  
 
   const validatePassword = (value) => {
     const hasNumber = /\d/.test(value);
