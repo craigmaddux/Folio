@@ -74,7 +74,7 @@ const SignupForm = ({ isAuthor = false }) => {
       return;
     }
 
-    const endpoint = isAuthorChecked ? '/api/author/signup' : '/api/signup';
+    const endpoint =  '/signup';
     const response = await fetchFromAPI(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -140,12 +140,7 @@ const SignupForm = ({ isAuthor = false }) => {
         </ul>
       </div>
       <label>
-        <input
-          type="checkbox"
-          checked={isAuthorChecked}
-          onChange={(e) => setIsAuthorChecked(e.target.checked)}
-        />
-        Sign up as an author
+       
       </label>
       <button type="submit" disabled={!isFormValid}>
         {isAuthorChecked ? 'Sign Up as Author' : 'Sign Up'}
