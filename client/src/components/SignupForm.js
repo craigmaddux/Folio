@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './SignupForm.css';
+import { fetchFromAPI } from './api';
 
 const SignupForm = ({ isAuthor = false }) => {
   const [username, setUsername] = useState('');
@@ -74,7 +75,7 @@ const SignupForm = ({ isAuthor = false }) => {
     }
 
     const endpoint = isAuthorChecked ? '/api/author/signup' : '/api/signup';
-    const response = await fetch(endpoint, {
+    const response = await fetchFromAPI(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password }),
