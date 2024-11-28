@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'devapi.leafquill.com/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://devapi.leafquill.com/api';
 
 export const fetchFromAPI = async (endpoint, options = {}) => {
     console.log("Checking url...");
