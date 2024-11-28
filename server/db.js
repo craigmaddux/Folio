@@ -9,9 +9,7 @@ const pool = new Pool({
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
-  ssl:{
-    require: true,
-    ca:fs.readFileSync("Microsoft RSA Root Certificate Authority 2017.crt").toString()},
+  ssl: true,
  
 });
 
