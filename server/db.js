@@ -1,6 +1,7 @@
 // server/db.js
 require('dotenv').config(); // Load environment variables from .env file
 const { Pool } = require('pg');
+const fs = require('fs');
 
 // Create a new pool instance to manage connections
 const pool = new Pool({
