@@ -10,7 +10,7 @@ const pool = new Pool({
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
-  ssl:{ca:fs.readFileSync("BaltimoreCyberTrustRoot.crt.pem").toString()},
+  ssl:{ca:fs.readFileSync("DigiCertGlobalRootG2.crt.pem").toString()},
  
 });
 
