@@ -2,6 +2,7 @@
 const path = require('path');
 const express = require('express');
 const db = require('./db'); // Import the db connection
+const cors = require('cors');
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 8080;
