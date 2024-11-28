@@ -83,9 +83,8 @@ const SignupForm = ({ isAuthor = false }) => {
 
     if (response.ok) {
       alert(
-        isAuthorChecked
-          ? 'Author signed up successfully!'
-          : 'User signed up successfully!'
+       
+          'User signed up successfully!'
       );
     } else {
       alert('Signup failed. Please try again.');
@@ -94,7 +93,7 @@ const SignupForm = ({ isAuthor = false }) => {
 
   return (
     <form className="signup-form" onSubmit={handleSubmit}>
-      <h2>{isAuthorChecked ? 'Author Sign Up' : 'Sign Up'}</h2>
+      <h2>Sign Up</h2>
       <input
         type="text"
         placeholder="Username"
@@ -143,7 +142,7 @@ const SignupForm = ({ isAuthor = false }) => {
        
       </label>
       <button type="submit" disabled={!isFormValid}>
-        {isAuthorChecked ? 'Sign Up as Author' : 'Sign Up'}
+        'Sign Up'
       </button>
     </form>
   );
