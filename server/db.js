@@ -10,7 +10,7 @@ const pool = new Pool({
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
   ssl: {
-    rejectUnauthorized: true, // Set to true with valid CA certificate
+    rejectUnauthorized: false, // Set to true with valid CA certificate
   },
 });
 
