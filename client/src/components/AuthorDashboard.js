@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import './AuthorDashboard.css';
+import { fetchFromAPI } from './api';
 
 const AuthorDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -20,7 +21,7 @@ const AuthorDashboard = () => {
   useEffect(() => {
     const checkProfile = async () => {
       try {
-        const response = await fetch(`/api/authors/${user.id}/exists`);
+        const response = await fetchFromAPI(`/authors/${user.id}/exists`);
         const data = await response.json();
         setHasProfile(data.hasProfile);
       } catch (error) {
@@ -51,7 +52,7 @@ const AuthorDashboard = () => {
     data.append('coverImage', coverImage);
 
     try {
-      const response = await fetch('/api/books/upload', {
+      const response = await fetchFromAPI('/books/upload', {
         method: 'POST',
         body: data,
       });

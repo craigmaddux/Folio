@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 import './AuthorProfile.css';
+import { fetchFromAPI } from './api';
 
 const AuthorProfile = () => {
   const { user } = useContext(AuthContext);
@@ -18,7 +19,7 @@ const AuthorProfile = () => {
   useEffect(() => {
     // Fetch existing profile if it exists
     const fetchProfile = async () => {
-      const response = await fetch(`/api/authors/${user.id}`);
+      const response = await fetchFromAPI(`/authors/${user.id}`);
       if (response.ok) {
         const data = await response.json();
         setAuthorProfile(data);

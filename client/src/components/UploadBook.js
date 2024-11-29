@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './UploadBook.css';
+import { fetchFromAPI } from './api';
 
 const UploadBook = () => {
   const [title, setTitle] = useState('');
@@ -25,7 +26,7 @@ const UploadBook = () => {
     formData.append('content', content);
 
     try {
-      const response = await fetch('/api/books/upload', {
+      const response = await fetchFromAPI('/books/upload', {
         method: 'POST',
         body: formData,
       });
