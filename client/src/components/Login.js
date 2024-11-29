@@ -13,20 +13,21 @@ const Login = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
+    console.log("Loging in...");
     try {
       const response = await fetchFromAPI('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       });
-
+      console.log("Parsing results....");
       const data = await response.json();
       if (response.ok) {
         console.log("login.js: " + data)
         login({ id: data.id, username: data.username }); // Save user data
         navigate('/'); // Redirect to the homepage
       } else {
+        console.log("Response not ok.");
         setError(data.message);
       }
     } catch (error) {
