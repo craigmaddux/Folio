@@ -33,9 +33,11 @@ router.post(
 
 // User Login
 router.post('/login', async (req, res) => {
+  console.log("Attmepting login.");
   const { username, password } = req.body;
   try {
     const result = await AuthController.validateLogin(username, password);
+    console.log("Returning results.");
     res.status(200).json(result);
   } catch (error) {
     console.error('Login error:', error.message);
