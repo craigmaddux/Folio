@@ -29,7 +29,7 @@ const Home = () => {
     const fetchPurchasedBooks = async () => {
       if (!user) return;
       try {
-        const response = await fetch(`/api/books?limit=4&username=${user.username}`);
+        const response = await fetchFromAPI(`/books?limit=4&username=${user.username}`);
         const data = await response.json();
         setPurchasedBooks(data);
       } catch (err) {

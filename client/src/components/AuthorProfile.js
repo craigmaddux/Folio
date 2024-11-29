@@ -30,7 +30,7 @@ const AuthorProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`/api/authors/${user.id}`, {
+    const response = await fetchFromAPI(`/authors/${user.id}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(authorProfile),
