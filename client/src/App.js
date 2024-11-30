@@ -1,6 +1,6 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home';
 import Header from './components/Header';
@@ -98,12 +98,12 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <AuthProvider>
         <RouteLogger />
           <AppContent />
       </AuthProvider>
-    </Router>
+    </BrowserRouter>
   );
 }
 
