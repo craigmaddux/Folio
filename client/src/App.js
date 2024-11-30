@@ -15,6 +15,7 @@ import Footer from './components/Footer';
 import AuthorDashboard from './components/AuthorDashboard';
 import AuthorProfile from './components/AuthorProfile';
 import PurchaseCreditsPage from './components/PurchaseCreditsPage';
+import Yay from './components/Yay';
 import Checkout from './components/CheckoutPage';
 import PaymentSuccessPage from './components/PaymentSuccessPage'; 
 import MyAccount from './components/MyAccount';
@@ -31,7 +32,7 @@ function AppContent() {
       <Header /> {/* Header is displayed on all pages */}
       <div className="main-content">
         <Routes>
-        <Route path="/yay" element={<PaymentSuccessPage />} />
+        <Route path="/yay" element={<Yay />} />
           <Route path="/" element={<Home />} />
           <Route path="/payment-success" element={<PaymentSuccessPage />} />
           <Route path="/purchase-credits" element={<PurchaseCreditsPage />} />
