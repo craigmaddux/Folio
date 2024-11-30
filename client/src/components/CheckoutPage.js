@@ -7,7 +7,7 @@ import { fetchFromAPI } from './api';
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe('your-publishable-key-here');
 
-const CheckoutForm = ({ totalCredits, totalCost }) => {
+const CheckoutForm = ({ creditCounts, totalCredits, totalCost }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { user } = useContext(AuthContext); // Access user context
@@ -90,7 +90,7 @@ const CheckoutPage = ({ totalCredits, totalCost }) => {
         const response = await fetchFromAPI('/purchase-credits', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ credits: totalCredits, amount: totalCost }),
+          body: JSON.stringify({ creditCounts: creditCounts, credits: totalCredits, amount: totalCost }),
         });
 
         if (!response.ok) {
