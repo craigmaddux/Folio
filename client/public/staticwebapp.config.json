@@ -1,16 +1,17 @@
 {
-    "mimeTypes": {
-      ".js": "application/javascript",
-      ".mjs": "application/javascript",
-      ".jsx": "application/javascript",
-      ".tsx": "application/javascript",
-      ".ts": "application/javascript",
-      ".css": "text/css"
+  "routes": [
+    {
+      "route": "/static/*",
+      "serve": "/static/"
     },
-    "routes": [
-        {
-        "route": "/*",
-        "rewrite": "/index.html"
-        }
-    ]
+    {
+      "route": "/*",
+      "rewrite": "/index.html"
+    }
+  ],
+  "mimeTypes": {
+    ".css": "text/css",
+    ".js": "application/javascript",
+    ".html": "text/html"
   }
+}
