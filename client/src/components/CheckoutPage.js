@@ -7,6 +7,7 @@ import { fetchFromAPI } from './api';
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe('your-publishable-key-here');
+const { creditCounts = {}, totalCredits = 0, totalCost = 0 } = state || {};
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -15,6 +16,7 @@ const CheckoutForm = () => {
   const { user } = useContext(AuthContext); // Access user context
   const [errorMessage, setErrorMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+ 
   
   console.log('State:', state); // Logs the state passed from the previous page
   const handleSubmit = async (e) => {
@@ -89,7 +91,7 @@ const CheckoutPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { creditCounts = {}, totalCredits = 0, totalCost = 0 } = state || {};
+    
     console.log('Credit Counts:', creditCounts);
     console.log('Total Credits:', totalCredits);
     console.log('Total Cost:', totalCost);
