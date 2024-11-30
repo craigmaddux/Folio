@@ -81,7 +81,7 @@ const CheckoutForm = ({ creditCounts, totalCredits, totalCost }) => {
   );
 };
 
-const CheckoutPage = ({ totalCredits, totalCost }) => {
+const CheckoutPage = ({ creditCounts, totalCredits, totalCost }) => {
   const [clientSecret, setClientSecret] = useState('');
   const [loading, setLoading] = useState(true);
 
