@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
     totalCost = cost;
     // eslint-disable-next-line
     totalPurchasedCredits = creditAmount;
-  }
+  };
   
 
   const login = (userData, authorStatus) => {
@@ -54,7 +54,8 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         totalCost,
-        totalPurchasedCredits, // Expose function to update credits
+        totalPurchasedCredits,
+        purchaseCredits, // Expose function to update credits
       }}
     >
       {children}
