@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import './Header.css';
@@ -6,61 +6,61 @@ import './Header.css';
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleMouseEnter = () => setDropdownOpen(true);
+  const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  const handleMouseLeave = () => {
-    // Close the menu after 1 second if the mouse is outside
-    setTimeout(() => setDropdownOpen(false), 1000);
-  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.dropdown-menu') && !event.target.closest('.hamburger-menu')) {
+        setMenuOpen(false);
+      }
+    };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="header">
       <div className="header-content">
-        <Link to="/" className="header-logo">
-          <h1>Folio</h1>
-        </Link>
-        <nav className="header-nav">
-          {user ? (
-            <div
-              className="dropdown"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <button className="dropdown-button">
-                Welcome, {user.username}!
-              </button>
-              {dropdownOpen && (
-                <div className="dropdown-menu">
-                  <Link to="/my-account" className="dropdown-item">
-                    My Account
-                  </Link>
-                  <Link to="/library" className="dropdown-item">
-                    Library
-                  </Link>
-                  <button className="dropdown-item" onClick={handleLogout}>
-                    Logout
-                  </button>
-                </div>
-              )}
+        <div className="header-branding">
+          <Link to="/" className="header-logo">
+            <h1>LeafQuill</h1>
+          </Link>
+          <p>Discover and read your favorite books and authors online.</p>
+        </div>
+        {user && (
+          <div className="header-actions">
+            <div className="hamburger-menu" onClick={toggleMenu}>
+              <span className="hamburger-line"></span>
+              <span className="hamburger-line"></span>
+              <span className="hamburger-line"></span>
             </div>
-          ) : (
-            <div className="header-actions">
-              <Link to="/signup" className="header-button">
-                Sign Up
-              </Link>
-              <Link to="/login" className="header-button">
-                Login
-              </Link>
+            <div className={`dropdown-menu ${menuOpen ? 'show' : ''}`}>
+              <span className="dropdown-item" onClick={() => navigate('/library')}>
+                View Library
+              </span>
+              <span className="dropdown-item" onClick={() => navigate('/purchase-credits')}>
+                Purchase Credits
+              </span>
+              <span className="dropdown-item" onClick={() => navigate('/my-account')}>
+                My Account
+              </span>
+              <span className="dropdown-item" onClick={logout}>
+                Log Out
+              </span>
             </div>
-          )}
-        </nav>
+          </div>
+        )}
+        {!user && (
+          <div className="header-actions">
+            <Link to="/signup" className="header-button">Sign Up</Link>
+            <Link to="/login" className="header-button">Login</Link>
+          </div>
+        )}
       </div>
     </header>
   );

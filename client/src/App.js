@@ -17,6 +17,7 @@ import AuthorProfile from './components/AuthorProfile';
 import PurchaseCreditsPage from './components/PurchaseCreditsPage';
 import Checkout from './components/CheckoutPage';
 import PaymentSuccessPage from './components/PaymentSuccessPage'; 
+import MyAccount from './components/MyAccount';
 
 
 
@@ -38,6 +39,14 @@ function AppContent() {
             element={
               <ProtectedRoute>
                 <BookReader />
+              </ProtectedRoute>
+            }
+          />
+           <Route
+            path="/my-account"
+            element={
+              <ProtectedRoute>
+                <MyAccount />
               </ProtectedRoute>
             }
           />
