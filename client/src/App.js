@@ -18,7 +18,7 @@ import PurchaseCreditsPage from './components/PurchaseCreditsPage';
 import Checkout from './components/CheckoutPage';
 import PaymentSuccessPage from './components/PaymentSuccessPage'; 
 import MyAccount from './components/MyAccount';
-
+import RouteLogger from './RouteLogger';
 
 
 function AppContent() {
@@ -98,6 +98,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
+        <RouteLogger />
           <AppContent />
       </AuthProvider>
     </Router>
