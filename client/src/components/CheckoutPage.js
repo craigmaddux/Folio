@@ -108,7 +108,7 @@ const CheckoutPage = ({ creditCounts, totalCredits, totalCost }) => {
     };
 
     fetchClientSecret();
-  }, [totalCredits, totalCost]);
+  }, [creditCounts, totalCredits, totalCost]);
 
   const stripeOptions = clientSecret ? { clientSecret } : null;
 
@@ -119,7 +119,7 @@ const CheckoutPage = ({ creditCounts, totalCredits, totalCost }) => {
         <p>Loading payment details...</p>
       ) : clientSecret ? (
         <Elements stripe={stripePromise} options={stripeOptions}>
-          <CheckoutForm totalCredits={totalCredits} totalCost={totalCost} />
+          <CheckoutForm creditCounts={creditCounts} totalCredits={totalCredits} totalCost={totalCost} />
         </Elements>
       ) : (
         <p>Error: Unable to initialize payment. Please try again later.</p>
