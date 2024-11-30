@@ -7,7 +7,7 @@ import AuthContext from '../context/AuthContext';
 
 const PurchaseCreditsPage = () => {
   const navigate = useNavigate();
-  const checkoutCredits = useContext(AuthContext);
+  const { checkoutCredits } = useContext(AuthContext);
   // State to track the number of credits selected
   const [creditCounts, setCreditCounts] = useState({
     5: 0,
@@ -37,7 +37,7 @@ const PurchaseCreditsPage = () => {
     console.log('Navigating with state:', { creditCounts, totalCredits, totalCost });
     console.log('Setting Auth Context');
     
-    checkoutCredits({creditAmount: totalCredits, cost: totalCost});
+    checkoutCredits(totalCredits, totalCost);
 
     navigate('/checkout', {  });
   };
