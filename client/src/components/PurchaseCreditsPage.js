@@ -33,6 +33,8 @@ const PurchaseCreditsPage = () => {
   };
 
   const handleCheckout = () => {
+    console.log('Navigating with state:', { creditCounts, totalCredits, totalCost });
+
     navigate('/checkout', { state: { creditCounts, totalCredits, totalCost } });
   };
 
