@@ -5,5 +5,11 @@
       ".jsx": "application/javascript",
       ".tsx": "application/javascript",
       ".ts": "application/javascript"
-    }
+    },
+    "routes": [
+        {
+        "route": "/*",
+        "rewrite": "/index.html"
+        }
+    ]
   }
