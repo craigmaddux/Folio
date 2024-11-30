@@ -6,6 +6,7 @@ class PaymentController {
     const { userId, credits, amount } = req.body;
 
     try {
+      console.log("Amount: " + amount);
       // Create a Payment Intent
       const paymentIntent = await stripe.paymentIntents.create({
         amount: amount * 100, // Stripe expects the amount in cents
