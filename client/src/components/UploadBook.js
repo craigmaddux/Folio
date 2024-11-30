@@ -7,13 +7,13 @@ const UploadBook = () => {
   const [price, setPrice] = useState('');
   const [genre, setGenre] = useState('');
   const [cover, setCover] = useState(null); // File upload for book cover
-  const [content, setContent] = useState(null); // File upload for book content
+  const [epub, setEpub] = useState(null); // File upload for EPUB file
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !price || !genre || !cover || !content) {
+    if (!title || !price || !genre || !cover || !epub) {
       setMessage('Please fill out all fields.');
       return;
     }
@@ -23,7 +23,7 @@ const UploadBook = () => {
     formData.append('price', price);
     formData.append('genre', genre);
     formData.append('cover', cover);
-    formData.append('content', content);
+    formData.append('epub', epub);
 
     try {
       const response = await fetchFromAPI('/books/upload', {
@@ -37,7 +37,7 @@ const UploadBook = () => {
         setPrice('');
         setGenre('');
         setCover(null);
-        setContent(null);
+        setEpub(null);
       } else {
         setMessage('Failed to upload book. Please try again.');
       }
@@ -92,11 +92,11 @@ const UploadBook = () => {
           />
         </div>
         <div className="form-group">
-          <label>Book Content</label>
+          <label>EPUB File</label>
           <input
             type="file"
-            accept=".txt,.pdf"
-            onChange={(e) => setContent(e.target.files[0])}
+            accept=".epub"
+            onChange={(e) => setEpub(e.target.files[0])}
             required
           />
         </div>
