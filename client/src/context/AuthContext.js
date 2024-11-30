@@ -6,6 +6,10 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthor, setIsAuthor] = useState(false);
+  // eslint-disable-next-line 
+  const [totalPurchasedCredits, setPurchaseCredits] = useState(0); // Total credits
+  // eslint-disable-next-line 
+  const [totalCost, setTotalCost] = useState(0); // Total cost
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,8 +19,11 @@ export const AuthProvider = ({ children }) => {
     if (loggedInUser) {
       setUser(JSON.parse(loggedInUser));
       setIsAuthor(authorStatus);
-    }
+    } 
   }, []);
+
+ 
+  
 
   const login = (userData, authorStatus) => {
     setUser(userData);
@@ -35,7 +42,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthor, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthor,
+        login,
+        logout,
+        totalCost,
+        totalPurchasedCredits, // Expose function to update credits
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

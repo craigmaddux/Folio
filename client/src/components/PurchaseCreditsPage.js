@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PurchaseCreditsPage.css';
-
+import AuthContext from '../context/AuthContext';
 
 const PurchaseCreditsPage = () => {
   const navigate = useNavigate();
@@ -34,8 +34,10 @@ const PurchaseCreditsPage = () => {
 
   const handleCheckout = () => {
     console.log('Navigating with state:', { creditCounts, totalCredits, totalCost });
+    AuthContext.setCreditCounts(totalCredits);
+    AuthContext.setPurchasedCredits(totalCost);
 
-    navigate('/checkout', { state: { creditCounts, totalCredits, totalCost } });
+    navigate('/checkout', {  });
   };
 
   return (
