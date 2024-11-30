@@ -31,6 +31,7 @@ function AppContent() {
       <Header /> {/* Header is displayed on all pages */}
       <div className="main-content">
         <Routes>
+        <Route path="/yay" element={<PaymentSuccessPage />} />
           <Route path="/" element={<Home />} />
           <Route path="/payment-success" element={<PaymentSuccessPage />} />
           <Route path="/purchase-credits" element={<PurchaseCreditsPage />} />
