@@ -1,0 +1,12 @@
+{
+    "routes": [
+      {
+        "route": "/api/*",
+        "rewrite": "/api/index.html"
+      },
+      {
+        "route": "/*",
+        "rewrite": "/index.html"
+      }
+    ]
+  }
