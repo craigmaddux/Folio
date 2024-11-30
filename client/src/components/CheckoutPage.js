@@ -87,7 +87,7 @@ const CheckoutPage = ({ totalCredits, totalCost }) => {
   useEffect(() => {
     const fetchClientSecret = async () => {
       try {
-        const response = await fetchFromAPI('/create-payment-intent', {
+        const response = await fetchFromAPI('/purchase-credits', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ credits: totalCredits, amount: totalCost }),
