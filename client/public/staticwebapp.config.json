@@ -4,7 +4,8 @@
       ".mjs": "application/javascript",
       ".jsx": "application/javascript",
       ".tsx": "application/javascript",
-      ".ts": "application/javascript"
+      ".ts": "application/javascript",
+      ".css": "text/css"
     },
     "routes": [
         {
