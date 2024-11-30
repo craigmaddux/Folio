@@ -12,6 +12,7 @@ const apiRoutes = require('./routes/api');
 // Define allowed origins
 const allowedOrigins = [
   'https://lemon-rock-0c1fe0d0f.5.azurestaticapps.net', // Add your client domain
+  'dev.leafquill.com',
 ];
 // Configure CORS
 app.use(cors({
