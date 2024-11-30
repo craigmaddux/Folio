@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useLocation, useEffect, useContext } from 'react';
 import { Elements, useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import AuthContext from '../context/AuthContext';
@@ -7,13 +7,15 @@ import { fetchFromAPI } from './api';
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe('your-publishable-key-here');
 
-const CheckoutForm = ({ creditCounts, totalCredits, totalCost }) => {
+const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
+  const { state } = useLocation();
   const { user } = useContext(AuthContext); // Access user context
   const [errorMessage, setErrorMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-
+  const { creditCounts = {}, totalCredits = 0, totalCost = 0 } = state || {};
+  console.log('State:', state); // Logs the state passed from the previous page
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
@@ -81,7 +83,7 @@ const CheckoutForm = ({ creditCounts, totalCredits, totalCost }) => {
   );
 };
 
-const CheckoutPage = ({ creditCounts, totalCredits, totalCost }) => {
+const CheckoutPage = () => {
   const [clientSecret, setClientSecret] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -111,7 +113,7 @@ const CheckoutPage = ({ creditCounts, totalCredits, totalCost }) => {
     };
 
     fetchClientSecret();
-  }, [creditCounts, totalCredits, totalCost]);
+  });
 
   const stripeOptions = clientSecret ? { clientSecret } : null;
 
@@ -122,7 +124,7 @@ const CheckoutPage = ({ creditCounts, totalCredits, totalCost }) => {
         <p>Loading payment details...</p>
       ) : clientSecret ? (
         <Elements stripe={stripePromise} options={stripeOptions}>
-          <CheckoutForm creditCounts={creditCounts} totalCredits={totalCredits} totalCost={totalCost} />
+          <CheckoutForm  />
         </Elements>
       ) : (
         <p>Error: Unable to initialize payment. Please try again later.</p>
