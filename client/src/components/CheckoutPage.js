@@ -86,6 +86,9 @@ const CheckoutPage = ({ creditCounts, totalCredits, totalCost }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('Credit Counts:', creditCounts);
+    console.log('Total Credits:', totalCredits);
+    console.log('Total Cost:', totalCost);
     const fetchClientSecret = async () => {
       try {
         const response = await fetchFromAPI('/purchase-credits', {
