@@ -7,17 +7,13 @@ import AuthContext from '../context/AuthContext';
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe('your-publishable-key-here');
 
-
-
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const { totalPurchaseCredits, totalCost } = useContext(AuthContext);
-  const { user } = useContext(AuthContext); // Access user context
+  const { totalPurchaseCredits, totalCost, user } = useContext(AuthContext); // Access user context
   const [errorMessage, setErrorMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
- 
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
@@ -50,7 +46,6 @@ const CheckoutForm = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             userId: user?.id, // Use the user ID from context
-            creditCounts: 1,
             credits: totalPurchaseCredits,
             amount: totalCost,
           }),
@@ -87,19 +82,16 @@ const CheckoutForm = () => {
 
 const CheckoutPage = () => {
   const [clientSecret, setClientSecret] = useState('');
-  const [loading, setLoading] = useState(true);
   const { totalPurchaseCredits, totalCost } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    
-    
-    console.log('Total Credits:', totalPurchaseCredits);
-    console.log('Total Cost:', totalCost);
     const fetchClientSecret = async () => {
       try {
         const response = await fetchFromAPI('/purchase-credits', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ creditCounts: 1, credits: totalPurchaseCredits, amount: totalCost }),
+          body: JSON.stringify({ credits: totalPurchaseCredits, amount: totalCost }),
         });
 
         if (!response.ok) {
@@ -116,22 +108,24 @@ const CheckoutPage = () => {
     };
 
     fetchClientSecret();
-  });
+  }, [totalPurchaseCredits, totalCost]); // Add dependencies to avoid infinite re-renders
 
-  const stripeOptions = clientSecret ? { clientSecret } : null;
+  if (loading) {
+    return <p>Loading payment details...</p>;
+  }
+
+  if (!clientSecret) {
+    return <p>Error: Unable to initialize payment. Please try again later.</p>;
+  }
+
+  const stripeOptions = { clientSecret };
 
   return (
     <div className="checkout-page">
       <h1>Checkout</h1>
-      {loading ? (
-        <p>Loading payment details...</p>
-      ) : clientSecret ? (
-        <Elements stripe={stripePromise} options={stripeOptions}>
-          <CheckoutForm  />
-        </Elements>
-      ) : (
-        <p>Error: Unable to initialize payment. Please try again later.</p>
-      )}
+      <Elements stripe={stripePromise} options={stripeOptions}>
+        <CheckoutForm />
+      </Elements>
     </div>
   );
 };
