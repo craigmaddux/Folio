@@ -1,72 +1,58 @@
-import React, { useState, useContext } from 'react';
-import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-import AuthContext from '../context/AuthContext';
+import React, { useState, useEffect } from 'react';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import CheckoutForm from './CheckoutForm';
+import './CheckoutPage.css';
+import { fetchFromAPI } from './api';
 
-const CheckoutForm = ({ totalCredits, totalCost }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const { user } = useContext(AuthContext); // Access user context
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
+// Initialize Stripe with your publishable key
+const stripePromise = loadStripe('your-publishable-key-here');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsProcessing(true);
+const CheckoutPage = () => {
+  const [clientSecret, setClientSecret] = useState('');
+  const [totalCredits, setTotalCredits] = useState(20); // Example values
+  const [totalCost, setTotalCost] = useState(20); // Example values
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/payment-success`, // Redirect here on success
-      },
-    });
-
-    if (error) {
-      setErrorMessage(error.message);
-      setIsProcessing(false);
-      return;
-    }
-
-    // Notify the backend after payment success
-    if (paymentIntent?.status === 'succeeded') {
+  useEffect(() => {
+    const fetchClientSecret = async () => {
       try {
-        console.log('Notifying back end of purchase.');
-        const response = await fetch('/api/confirm-purchase', {
+        const response = await fetchFromAPI('/purchase-credits', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            userId: user.id, // Use the user ID from context
             credits: totalCredits,
             amount: totalCost,
           }),
         });
 
         if (!response.ok) {
-          throw new Error('Failed to confirm purchase');
+          throw new Error('Failed to fetch client secret');
         }
 
-        console.log('Credits successfully recorded!');
+        const data = await response.json();
+        setClientSecret(data.clientSecret);
       } catch (error) {
-        console.error('Error confirming purchase:', error.message);
+        console.error('Error fetching clientSecret:', error);
       }
-    }
+    };
 
-    setIsProcessing(false);
-  };
+    fetchClientSecret();
+  }, [totalCredits, totalCost]);
+
+  const stripeOptions = clientSecret ? { clientSecret } : null;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Summary</h2>
-      <p>Total Credits: {totalCredits}</p>
-      <p>Total Cost: ${totalCost}</p>
-
-      <PaymentElement />
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-
-      <button type="submit" disabled={!stripe || isProcessing}>
-        {isProcessing ? 'Processing...' : 'Pay Now'}
-      </button>
-    </form>
+    <div className="checkout-page">
+      <h1>Checkout</h1>
+      {clientSecret ? (
+        <Elements stripe={stripePromise} options={stripeOptions}>
+          <CheckoutForm totalCredits={totalCredits} totalCost={totalCost} />
+        </Elements>
+      ) : (
+        <p>Loading payment details...</p>
+      )}
+    </div>
   );
 };
 
-export default CheckoutForm;
+export default CheckoutPage;
