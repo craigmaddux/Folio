@@ -70,4 +70,4 @@ const CheckoutForm = ({ totalCredits, totalCost }) => {
   );
 };
 
-export default CheckoutPage;
+export default CheckoutForm;
