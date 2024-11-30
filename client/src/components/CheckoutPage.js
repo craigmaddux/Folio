@@ -15,7 +15,7 @@ const CheckoutForm = () => {
   const { user } = useContext(AuthContext); // Access user context
   const [errorMessage, setErrorMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const { creditCounts = {}, totalCredits = 0, totalCost = 0 } = state || {};
+  
   console.log('State:', state); // Logs the state passed from the previous page
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,6 +89,7 @@ const CheckoutPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const { creditCounts = {}, totalCredits = 0, totalCost = 0 } = state || {};
     console.log('Credit Counts:', creditCounts);
     console.log('Total Credits:', totalCredits);
     console.log('Total Cost:', totalCost);
