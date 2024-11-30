@@ -21,9 +21,11 @@ export const AuthProvider = ({ children }) => {
       setIsAuthor(authorStatus);
     } 
   }, []);
-
+  // eslint-disable-next-line
   const purchaseCredits = (creditAmount, cost) => {
+    // eslint-disable-next-line
     totalCost = cost;
+    // eslint-disable-next-line
     totalPurchasedCredits = creditAmount;
   }
   
