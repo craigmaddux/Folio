@@ -22,7 +22,10 @@ export const AuthProvider = ({ children }) => {
     } 
   }, []);
 
- 
+  const purchaseCredits = (creditAmount, cost) => {
+    totalCost = cost;
+    totalPurchasedCredits = creditAmount;
+  }
   
 
   const login = (userData, authorStatus) => {
