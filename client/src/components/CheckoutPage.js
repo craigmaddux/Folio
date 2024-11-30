@@ -46,6 +46,7 @@ const CheckoutForm = ({ creditCounts, totalCredits, totalCost }) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             userId: user?.id, // Use the user ID from context
+            creditCounts: creditCounts,
             credits: totalCredits,
             amount: totalCost,
           }),
