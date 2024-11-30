@@ -34,8 +34,8 @@ const PurchaseCreditsPage = () => {
 
   const handleCheckout = () => {
     console.log('Navigating with state:', { creditCounts, totalCredits, totalCost });
-    AuthContext.setCreditCounts(totalCredits);
-    AuthContext.setPurchasedCredits(totalCost);
+    AuthContext.setPurchasedCredits(totalCredits);
+    AuthContext.setTotalCost(totalCost);
 
     navigate('/checkout', {  });
   };
