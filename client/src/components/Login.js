@@ -23,7 +23,7 @@ const Login = () => {
       console.log("Parsing results....");
       const data = await response.json();
       if (response.ok) {
-        console.log("login.js: " + data)
+        
         login({ id: data.id, username: data.username }); // Save user data
         navigate('/'); // Redirect to the homepage
       } else {

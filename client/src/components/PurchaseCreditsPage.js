@@ -1,12 +1,13 @@
 // src/components/PurchaseCreditsPage.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PurchaseCreditsPage.css';
 import AuthContext from '../context/AuthContext';
 
+
 const PurchaseCreditsPage = () => {
   const navigate = useNavigate();
-
+  const checkoutCredits = useContext(AuthContext);
   // State to track the number of credits selected
   const [creditCounts, setCreditCounts] = useState({
     5: 0,
@@ -35,7 +36,8 @@ const PurchaseCreditsPage = () => {
   const handleCheckout = () => {
     console.log('Navigating with state:', { creditCounts, totalCredits, totalCost });
     console.log('Setting Auth Context');
-    AuthContext.purchaseCredits(totalCredits, totalCost);
+    
+    checkoutCredits({creditAmount: totalCredits, cost: totalCost});
 
     navigate('/checkout', {  });
   };

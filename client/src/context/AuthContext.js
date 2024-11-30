@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     } 
   }, []);
 
-  const purchaseCredits = (creditAmount, cost) => {
+  const checkoutCredits = (creditAmount, cost) => {
     setTotalCost(cost);
     setPurchaseCredits(creditAmount);
   };
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         totalCost,
         totalPurchasedCredits,
-        purchaseCredits, // Expose function to update credits
+        checkoutCredits, // Expose function to update credits
       }}
     >
       {children}
