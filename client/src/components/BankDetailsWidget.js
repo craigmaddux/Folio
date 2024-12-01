@@ -1,96 +1,80 @@
 import React, { useState } from 'react';
-import { fetchFromAPI } from './api'; // Custom API helper
-import './BankDetailsWidget.css';
+import { Elements, useStripe, useElements, BankElement } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
-const BankDetailsWidget = () => {
-  const [accountHolderName, setAccountHolderName] = useState('');
-  const [accountNumber, setAccountNumber] = useState('');
-  const [routingNumber, setRoutingNumber] = useState('');
-  const [accountType, setAccountType] = useState('checking');
-  const [message, setMessage] = useState('');
+const stripePromise = loadStripe('your-publishable-key-here');
+
+const BankDetailsForm = () => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsProcessing(true);
 
-    // Validate form inputs
-    if (!accountHolderName || !accountNumber || !routingNumber) {
-      setMessage('All fields are required.');
+    if (!stripe || !elements) {
+      setErrorMessage('Stripe.js has not loaded yet.');
+      setIsProcessing(false);
       return;
     }
 
     try {
-      // Send bank details to backend
-      const response = await fetchFromAPI('/stripe/bank-details', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          accountHolderName,
-          accountNumber,
-          routingNumber,
-          accountType,
-        }),
-      });
-
-      if (response.ok) {
-        setMessage('Bank details saved successfully!');
+      const result = await stripe.createToken(elements.getElement(BankElement));
+      if (result.error) {
+        setErrorMessage(result.error.message);
       } else {
-        const { error } = await response.json();
-        setMessage(`Error: ${error}`);
+        // Send the token to your backend for further processing
+        console.log('Bank account token:', result.token);
+        const response = await fetch('/api/save-bank-details', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: result.token.id }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to save bank details');
+        }
+
+        alert('Bank details saved successfully!');
       }
     } catch (error) {
-      setMessage('An error occurred. Please try again.');
+      setErrorMessage(error.message);
     }
+
+    setIsProcessing(false);
   };
 
   return (
-    <div className="bank-details-widget">
-      <h2>Bank Details</h2>
-      {message && <p className="message">{message}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Account Holder Name</label>
-          <input
-            type="text"
-            value={accountHolderName}
-            onChange={(e) => setAccountHolderName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Account Number</label>
-          <input
-            type="text"
-            value={accountNumber}
-            onChange={(e) => setAccountNumber(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Routing Number</label>
-          <input
-            type="text"
-            value={routingNumber}
-            onChange={(e) => setRoutingNumber(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Account Type</label>
-          <select
-            value={accountType}
-            onChange={(e) => setAccountType(e.target.value)}
-            required
-          >
-            <option value="checking">Checking</option>
-            <option value="savings">Savings</option>
-          </select>
-        </div>
-        <button type="submit" className="save-button">
-          Save Bank Details
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <h2>Enter Your Bank Details</h2>
+      <BankElement
+        options={{
+          style: {
+            base: {
+              fontSize: '16px',
+              color: '#424770',
+              '::placeholder': { color: '#aab7c4' },
+            },
+            invalid: { color: '#9e2146' },
+          },
+        }}
+      />
+      {errorMessage && <div className="error">{errorMessage}</div>}
+      <button type="submit" disabled={!stripe || isProcessing}>
+        {isProcessing ? 'Processing...' : 'Save Bank Details'}
+      </button>
+    </form>
   );
 };
 
-export default BankDetailsWidget;
+const BankDetailsPage = () => {
+  return (
+    <Elements stripe={stripePromise}>
+      <BankDetailsForm />
+    </Elements>
+  );
+};
+
+export default BankDetailsPage;

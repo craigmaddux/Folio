@@ -33,3 +33,30 @@ exports.saveBankDetails = async (req, res) => {
     res.status(500).json({ error: 'Failed to save bank details.' });
   }
 };
+
+exports.saveBankDetails = async (req, res) => {
+  const { userId, token } = req.body;
+
+  try {
+    // Attach the bank account to the Stripe customer
+    const customer = await stripe.customers.create({
+      description: `Customer for user ID: ${userId}`,
+    });
+
+    const bankAccount = await stripe.customers.createSource(customer.id, {
+      source: token, // The token from the BankElement
+    });
+
+    // Store the customer ID and bank account details in your database
+    await db.query(
+      'UPDATE authors SET stripe_account_id = $1, stripe_bank_account_id = $2 WHERE user_id = $3',
+      [customer.id, bankAccount.id, userId]
+    );
+
+    res.json({ message: 'Bank account saved successfully' });
+  } catch (error) {
+    console.error('Error saving bank details:', error.message);
+    res.status(500).json({ error: 'Failed to save bank details' });
+  }
+};
+
