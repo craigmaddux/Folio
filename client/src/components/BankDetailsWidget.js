@@ -13,7 +13,7 @@ const BankDetailsForm = () => {
 
   const [accountHolderName, setAccountHolderName] = useState('');
   const [country, setCountry] = useState('DE'); // Default to Germany for SEPA testing
-  const [accountType, setAccountType] = useState('checking');
+  const [accountType] = useState('checking');
   const [routingNumber, setRoutingNumber] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
 
