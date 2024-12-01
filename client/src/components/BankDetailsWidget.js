@@ -3,7 +3,7 @@ import { Elements, useStripe, useElements, IbanElement } from '@stripe/react-str
 import { loadStripe } from '@stripe/react-stripe-js';
 
 // Initialize Stripe with your publishable key
-const stripePromise = loadStripe('your-publishable-key-here');
+const stripePromise = loadStripe('pk_test_51QNbQFB3kskbD2Vepm6Ja7rmwzG6p1lfR1Bk6us7ilbavJcnmhgAOVlI5nJ3SX6gX4dX9rH8iAI3EXpZab4QdeOE001p7rGs8I');
 
 const BankDetailsForm = () => {
   const stripe = useStripe();
