@@ -20,7 +20,7 @@ import Checkout from './components/CheckoutPage';
 import PaymentSuccessPage from './components/PaymentSuccessPage'; 
 import MyAccount from './components/MyAccount';
 import RouteLogger from './components/RouteLogger';
-import BankDetailsWidget from './components/BankDetailsWidget';
+import BankDetailsPage from './components/BankDetailsWidget';
 
 
 function AppContent() {
@@ -35,7 +35,7 @@ function AppContent() {
         <Routes>
         <Route path="/yay" element={<Yay />} />
           <Route path="/" element={<Home />} />
-          <Route path="/author-bank-details" element={<BankDetailsWidget />} />
+          <Route path="/author-bank-details" element={<BankDetailsPage />} />
           <Route path="/payment-success" element={<PaymentSuccessPage />} />
           <Route path="/purchase-credits" element={<PurchaseCreditsPage />} />
           <Route
