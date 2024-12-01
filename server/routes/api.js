@@ -126,8 +126,8 @@ router.post('/authors/:userId', AuthorController.upsertAuthorProfile);
 router.get('/authors/:userId/exists', AuthorController.checkAuthorProfile);
 
 // Bank details management
-router.post('/authors/bank-details', BankController.addOrUpdateBankDetails);
-router.get('/authors/bank-details', BankController.getBankDetails);
+//router.post('/authors/bank-details', BankController.addOrUpdateBankDetails);
+//router.get('/authors/bank-details', BankController.getBankDetails);
 
 /** ================== Miscellaneous Routes ================== */
 
