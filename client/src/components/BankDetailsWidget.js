@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Elements, useStripe, useElements, IbanElement } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe('pk_test_51QNbQFB3kskbD2Vepm6Ja7rmwzG6p1lfR1Bk6us7ilbavJcnmhgAOVlI5nJ3SX6gX4dX9rH8iAI3EXpZab4QdeOE001p7rGs8I');
