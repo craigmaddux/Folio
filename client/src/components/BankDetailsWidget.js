@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Elements, useStripe, useElements, BankElement } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
+import { Elements, useStripe, useElements, IbanElement } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/react-stripe-js';
 
+// Initialize Stripe with your publishable key
 const stripePromise = loadStripe('your-publishable-key-here');
 
 const BankDetailsForm = () => {
@@ -21,12 +22,14 @@ const BankDetailsForm = () => {
     }
 
     try {
-      const result = await stripe.createToken(elements.getElement(BankElement));
+      // Use IbanElement to create a token
+      const result = await stripe.createToken(elements.getElement(IbanElement));
       if (result.error) {
         setErrorMessage(result.error.message);
       } else {
-        // Send the token to your backend for further processing
         console.log('Bank account token:', result.token);
+
+        // Send the token to your backend
         const response = await fetch('/api/save-bank-details', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -49,8 +52,10 @@ const BankDetailsForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Enter Your Bank Details</h2>
-      <BankElement
+      <IbanElement
         options={{
+          supportedCountries: ['SEPA'], // Specify supported countries
+          placeholderCountry: 'DE', // Default placeholder country
           style: {
             base: {
               fontSize: '16px',

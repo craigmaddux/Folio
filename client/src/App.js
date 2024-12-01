@@ -35,6 +35,7 @@ function AppContent() {
         <Routes>
         <Route path="/yay" element={<Yay />} />
           <Route path="/" element={<Home />} />
+          console.log(BankDetailsPage);
           <Route path="/author-bank-details" element={<BankDetailsPage />} />
           <Route path="/payment-success" element={<PaymentSuccessPage />} />
           <Route path="/purchase-credits" element={<PurchaseCreditsPage />} />
