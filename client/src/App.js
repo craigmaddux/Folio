@@ -20,6 +20,7 @@ import Checkout from './components/CheckoutPage';
 import PaymentSuccessPage from './components/PaymentSuccessPage'; 
 import MyAccount from './components/MyAccount';
 import RouteLogger from './components/RouteLogger';
+import BankDetailsWidget from './components/BankDetailsWidget';
 
 
 function AppContent() {
