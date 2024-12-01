@@ -13,6 +13,7 @@ const CheckoutForm = () => {
   const { totalPurchaseCredits, totalCost, user } = useContext(AuthContext); // Access user context
   const [errorMessage, setErrorMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  console.log('Rendering PaymentElement with stripe:', stripe, 'and elements:', elements);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,6 +87,8 @@ const CheckoutPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('totalPurchaseCredits:', totalPurchaseCredits, 'totalCost:', totalCost);
+
     const fetchClientSecret = async () => {
       try {
         const response = await fetchFromAPI('/purchase-credits', {
@@ -93,12 +96,13 @@ const CheckoutPage = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ credits: totalPurchaseCredits, amount: totalCost }),
         });
-
+        console.log('Response from /purchase-credits:', response);
         if (!response.ok) {
           throw new Error('Failed to fetch client secret');
         }
 
         const data = await response.json();
+        console.log('Data from /purchase-credits:', data);
         setClientSecret(data.clientSecret);
       } catch (error) {
         console.error('Error fetching client secret:', error);
@@ -119,7 +123,7 @@ const CheckoutPage = () => {
   }
 
   const stripeOptions = { clientSecret };
-
+  
   return (
     <div className="checkout-page">
       <h1>Checkout</h1>
