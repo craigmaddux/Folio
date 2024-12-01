@@ -34,6 +34,7 @@ function AppContent() {
         <Routes>
         <Route path="/yay" element={<Yay />} />
           <Route path="/" element={<Home />} />
+          <Route path="/author-bank-details" element={<BankDetailsWidget />} />
           <Route path="/payment-success" element={<PaymentSuccessPage />} />
           <Route path="/purchase-credits" element={<PurchaseCreditsPage />} />
           <Route

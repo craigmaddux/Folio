@@ -1,0 +1,52 @@
+.bank-details-widget {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+  }
+  
+  .bank-details-widget h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .bank-details-widget .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .bank-details-widget .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .bank-details-widget .form-group input,
+  .bank-details-widget .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .bank-details-widget .save-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .bank-details-widget .save-button:hover {
+    background: #45a049;
+  }
+  
+  .bank-details-widget .message {
+    margin-top: 10px;
+    color: red;
+    text-align: center;
+  }
+  
