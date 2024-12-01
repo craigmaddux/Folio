@@ -11,6 +11,12 @@ const BankDetailsForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const [accountHolderName, setAccountHolderName] = useState('');
+  const [country, setCountry] = useState('DE'); // Default to Germany for SEPA testing
+  const [accountType, setAccountType] = useState('checking');
+  const [routingNumber, setRoutingNumber] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
@@ -22,8 +28,26 @@ const BankDetailsForm = () => {
     }
 
     try {
-      // Use IbanElement to create a token
-      const result = await stripe.createToken(elements.getElement(IbanElement));
+      let result;
+
+      if (country === 'US') {
+        // Use manual fields for US bank details
+        result = await stripe.createToken('bank_account', {
+          country,
+          currency: 'usd',
+          routing_number: routingNumber,
+          account_number: accountNumber,
+          account_holder_name: accountHolderName,
+          account_holder_type: accountType,
+        });
+      } else {
+        // Use IbanElement for SEPA countries
+        result = await stripe.createToken(elements.getElement(IbanElement), {
+          account_holder_name: accountHolderName,
+          account_holder_type: accountType,
+        });
+      }
+
       if (result.error) {
         setErrorMessage(result.error.message);
       } else {
@@ -52,20 +76,72 @@ const BankDetailsForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Enter Your Bank Details</h2>
-      <IbanElement
-        options={{
-          supportedCountries: ['SEPA'], // Specify supported countries
-          placeholderCountry: 'DE', // Default placeholder country
-          style: {
-            base: {
-              fontSize: '16px',
-              color: '#424770',
-              '::placeholder': { color: '#aab7c4' },
-            },
-            invalid: { color: '#9e2146' },
-          },
-        }}
-      />
+      <div className="form-group">
+        <label>Account Holder Name</label>
+        <input
+          type="text"
+          value={accountHolderName}
+          onChange={(e) => setAccountHolderName(e.target.value)}
+          placeholder="John Doe"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Country</label>
+        <select
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+          required
+        >
+          <option value="DE">Germany</option>
+          <option value="FR">France</option>
+          <option value="ES">Spain</option>
+          <option value="US">United States</option>
+          {/* Add more countries as needed */}
+        </select>
+      </div>
+      {country === 'US' ? (
+        <>
+          <div className="form-group">
+            <label>Routing Number</label>
+            <input
+              type="text"
+              value={routingNumber}
+              onChange={(e) => setRoutingNumber(e.target.value)}
+              placeholder="123456789"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Account Number</label>
+            <input
+              type="text"
+              value={accountNumber}
+              onChange={(e) => setAccountNumber(e.target.value)}
+              placeholder="123456789123"
+              required
+            />
+          </div>
+        </>
+      ) : (
+        <div className="form-group">
+          <label>IBAN</label>
+          <IbanElement
+            options={{
+              supportedCountries: ['SEPA'],
+              placeholderCountry: country,
+              style: {
+                base: {
+                  fontSize: '16px',
+                  color: '#424770',
+                  '::placeholder': { color: '#aab7c4' },
+                },
+                invalid: { color: '#9e2146' },
+              },
+            }}
+          />
+        </div>
+      )}
       {errorMessage && <div className="error">{errorMessage}</div>}
       <button type="submit" disabled={!stripe || isProcessing}>
         {isProcessing ? 'Processing...' : 'Save Bank Details'}
