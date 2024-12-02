@@ -18,8 +18,8 @@ const corsOptions = {
 // Middleware
 app.use(cors(corsOptions)); // Apply CORS middleware globally
 app.options('*', cors(corsOptions)); // Handle preflight requests
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
+
 
 // Stripe Webhook route (use raw body parser for Stripe signature verification)
 app.use(
@@ -27,7 +27,8 @@ app.use(
   bodyParser.raw({ type: 'application/json' }), // Raw body for Stripe
   stripeWebhookRouter
 );
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 // API routes
 app.use('/api', apiRouter);
 
