@@ -114,7 +114,7 @@ const CheckoutPage = () => {
     };
 
     fetchClientSecret();
-  }, [totalCredits, totalCost]); // Add dependencies to avoid infinite re-renders
+  }, [totalCredits, totalCost, user]); // Add dependencies to avoid infinite re-renders
 
   if (loading) {
     return <p>Loading payment details...</p>;
