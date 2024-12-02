@@ -23,7 +23,7 @@ router.post(
 
     // Handle different types of events
     switch (event.type) {
-      case 'payment_intent.succeeded':
+      case 'charge.succeeded':
         const paymentIntent = event.data.object;
         console.log(`PaymentIntent succeeded: ${paymentIntent.id}`);
         // TODO: Add business logic for successful payments
