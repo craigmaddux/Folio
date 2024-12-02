@@ -7,15 +7,17 @@ const stripeWebhookRouter = require('./routes/stripe');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configure CORS for API routes
+// Configure CORS
 const corsOptions = {
-  origin: ['https://your-frontend-domain.com', 'http://localhost:3000'], // Add allowed origins
+  origin: ['https://dev.leafquill.com', 'http://localhost:3000'], // Replace with your actual domains
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, // Allow cookies or authentication headers
+  credentials: true,
 };
 
-// Parse JSON and form data
+// Middleware
+app.use(cors(corsOptions)); // Apply CORS middleware globally
+app.options('*', cors(corsOptions)); // Handle preflight requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -26,15 +28,18 @@ app.use(
   stripeWebhookRouter
 );
 
-// CORS for all other API routes
-app.use(cors(corsOptions));
-
 // API routes
 app.use('/api', apiRouter);
 
-// Default route (for debugging or health check)
+// Health check
 app.get('/', (req, res) => {
   res.send('Server is running');
+});
+
+// Debugging middleware
+app.use((req, res, next) => {
+  console.log(`Request: ${req.method} ${req.path}`);
+  next();
 });
 
 // Start the server
