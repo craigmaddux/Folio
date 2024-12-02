@@ -9,7 +9,7 @@ router.post(
   (req, res) => {
     const sig = req.headers['stripe-signature'];
     let event;
-
+    
     try {
       event = stripe.webhooks.constructEvent(
         req.body,

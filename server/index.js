@@ -1,52 +1,43 @@
-// server/index.js
-const path = require('path');
 const express = require('express');
-const db = require('./db'); // Import the db connection
+const bodyParser = require('body-parser');
 const cors = require('cors');
+const apiRouter = require('./routes/api');
+const stripeWebhookRouter = require('./routes/stripeWebhookRouter');
+
 const app = express();
-app.use(express.json());
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 
-const apiRoutes = require('./routes/api');
-
-// Define allowed origins
-const allowedOrigins = [
-  'https://lemon-rock-0c1fe0d0f.5.azurestaticapps.net', // Add your client domain
-  'https://dev.leafquill.com',
-];
-// Configure CORS
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (e.g., mobile apps, curl requests)
-    
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      console.log("Origin: " + origin);
-      const msg = 'The CORS policy for this site does not allow access from the specified origin: ';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
+// Configure CORS for API routes
+const corsOptions = {
+  origin: ['https://your-frontend-domain.com', 'http://localhost:3000'], // Add allowed origins
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, // Allow credentials if needed
-}));
+  credentials: true, // Allow cookies or authentication headers
+};
 
-app.use('/api', apiRoutes);
-// Serve static HTML files
-app.use('/static/html', express.static(path.join(__dirname, 'static/html')));
+// Parse JSON and form data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
+// Stripe Webhook route (use raw body parser for Stripe signature verification)
+app.use(
+  '/webhook',
+  bodyParser.raw({ type: 'application/json' }), // Raw body for Stripe
+  stripeWebhookRouter
+);
 
-// server/index.js or server/app.js
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
+// CORS for all other API routes
+app.use(cors(corsOptions));
+
+// API routes
+app.use('/api', apiRouter);
+
+// Default route (for debugging or health check)
+app.get('/', (req, res) => {
+  res.send('Server is running');
 });
 
-
-
-
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
- 
