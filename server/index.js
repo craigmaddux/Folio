@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const apiRouter = require('./routes/api');
-const stripeWebhookRouter = require('./routes/stripeWebhookRouter');
+const stripeWebhookRouter = require('./routes/stripe');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
