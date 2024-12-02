@@ -47,7 +47,7 @@ class PaymentController {
   }
 
   // Webhook handler
-  static async handleWebhook(req, res) {
+  static async handleChargeResponse(req, res) {
     const sig = req.headers['stripe-signature'];
     console.log("Processing webhook.");
     console.log("Req" + req);
@@ -60,7 +60,7 @@ class PaymentController {
 
       console.log("Event Type: " + event.type);   
       switch (event.type) {
-        case 'payment_intent.succeeded': {
+        case 'charge.succeeded': {
           const paymentIntent = event.data.object;
           const { metadata } = paymentIntent;
           console.log("Metadata: " + metadata);
