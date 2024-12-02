@@ -105,6 +105,7 @@ router.post(
   async (req, res) => {
     const sig = req.headers['stripe-signature'];
     console.log("Entered webhook.");
+    console.log("Verify secret: " +  process.env.STRIPE_WEBHOOK_SECRET);
     try {
       const event = stripe.webhooks.constructEvent(
         req.body, // Raw body required
