@@ -4,7 +4,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Use the raw body parser for Stripe to handle the webhook signature
 router.post(
-  '/',
+  '/stripe-webhook',
   express.raw({ type: 'application/json' }),
   (req, res) => {
     const sig = req.headers['stripe-signature'];
