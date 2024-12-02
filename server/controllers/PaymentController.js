@@ -14,7 +14,7 @@ class PaymentController {
         metadata: { userId, credits },
         payment_method_types: ['us_bank_account'], // Specify ACH payments only
       });
-
+      console.log("Meta data added: " + userId + " " + credits);
       // Respond with the Payment Intent client secret
       res.json({ clientSecret: paymentIntent.client_secret });
     } catch (error) {
