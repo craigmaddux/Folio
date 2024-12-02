@@ -49,19 +49,19 @@ class PaymentController {
   // Webhook handler
   static async handleWebhook(req, res) {
     const sig = req.headers['stripe-signature'];
-
+    console.log("Processing webhook.");
     try {
       const event = stripe.webhooks.constructEvent(
         req.rawBody, // Raw body needed for Stripe signature verification
         sig,
         process.env.STRIPE_WEBHOOK_SECRET // Secret key from Stripe webhook configuration
       );
-
+      console.log("Event Type: " + event.type);   
       switch (event.type) {
         case 'payment_intent.succeeded': {
           const paymentIntent = event.data.object;
           const { metadata } = paymentIntent;
-
+          console.log("Metadata: " + metadata);
           if (!metadata.userId || !metadata.credits) {
             console.error('Invalid metadata in payment intent');
             return res.status(400).json({ error: 'Invalid metadata' });
