@@ -10,7 +10,7 @@ const stripePromise = loadStripe('pk_test_51QNbQFB3kskbD2Vepm6Ja7rmwzG6p1lfR1Bk6
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const { totalPurchaseCredits, totalCost } = useContext(AuthContext); // Access user context
+  const { totalCredits, totalCost } = useContext(AuthContext); // Access user context
   const { user } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -88,7 +88,7 @@ const CheckoutPage = () => {
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    console.log('totalPurchaseCredits:', totalPurchaseCredits, 'totalCost:', totalCost);
+    console.log('totalPurchaseCredits:', totalCredits, 'totalCost:', totalCost);
     console.log('User: ' + user)
 
     const fetchClientSecret = async () => {
@@ -96,7 +96,7 @@ const CheckoutPage = () => {
         const response = await fetchFromAPI('/purchase-credits', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: user.id, credits: totalPurchaseCredits, amount: totalCost }),
+          body: JSON.stringify({ userId: user.id, credits: totalCredits, amount: totalCost }),
         });
         console.log('Response from /purchase-credits:', response);
         if (!response.ok) {
@@ -114,7 +114,7 @@ const CheckoutPage = () => {
     };
 
     fetchClientSecret();
-  }, [totalPurchaseCredits, totalCost]); // Add dependencies to avoid infinite re-renders
+  }, [totalCredits, totalCost]); // Add dependencies to avoid infinite re-renders
 
   if (loading) {
     return <p>Loading payment details...</p>;
