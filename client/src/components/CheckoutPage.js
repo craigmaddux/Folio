@@ -10,7 +10,8 @@ const stripePromise = loadStripe('pk_test_51QNbQFB3kskbD2Vepm6Ja7rmwzG6p1lfR1Bk6
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const { totalPurchaseCredits, totalCost, user } = useContext(AuthContext); // Access user context
+  const { totalPurchaseCredits, totalCost } = useContext(AuthContext); // Access user context
+  const { user } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   console.log('Rendering PaymentElement with stripe:', stripe, 'and elements:', elements);
@@ -46,7 +47,7 @@ const CheckoutForm = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            userId: user?.id, // Use the user ID from context
+            userId: user.id, // Use the user ID from context
             credits: totalPurchaseCredits,
             amount: totalCost,
           }),
@@ -83,11 +84,12 @@ const CheckoutForm = () => {
 
 const CheckoutPage = () => {
   const [clientSecret, setClientSecret] = useState('');
-  const { totalPurchaseCredits, totalCost, user } = useContext(AuthContext);
+  const { totalCredits, totalCost, user } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     console.log('totalPurchaseCredits:', totalPurchaseCredits, 'totalCost:', totalCost);
+    console.log('User: ' + user)
 
     const fetchClientSecret = async () => {
       try {
