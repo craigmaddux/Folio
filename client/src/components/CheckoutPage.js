@@ -48,7 +48,7 @@ const CheckoutForm = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             userId: user.id, // Use the user ID from context
-            credits: totalPurchaseCredits,
+            credits: totalCredits,
             amount: totalCost,
           }),
         });
@@ -69,7 +69,7 @@ const CheckoutForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Summary</h2>
-      <p>Total Credits: {totalPurchaseCredits}</p>
+      <p>Total Credits: {totalCredits}</p>
       <p>Total Cost: ${totalCost.toFixed(2)}</p>
 
       <PaymentElement />
