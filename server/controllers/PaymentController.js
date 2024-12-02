@@ -7,6 +7,7 @@ class PaymentController {
 
     try {
       console.log("Amount: " + amount);
+      console.log("Meta data added: " + userId + " " + credits);
       // Create a Payment Intent
       const paymentIntent = await stripe.paymentIntents.create({
         amount: amount * 100, // Stripe expects the amount in cents
@@ -14,7 +15,7 @@ class PaymentController {
         metadata: { userId, credits },
         payment_method_types: ['us_bank_account'], // Specify ACH payments only
       });
-      console.log("Meta data added: " + userId + " " + credits);
+      
       // Respond with the Payment Intent client secret
       res.json({ clientSecret: paymentIntent.client_secret });
     } catch (error) {
