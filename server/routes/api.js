@@ -2,7 +2,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 const multer = require('multer');
-
+const bodyParser = require('body-parser');
 const UserController = require('../controllers/UserController');
 const AuthController = require('../controllers/AuthController');
 const BookController = require('../controllers/BookController');
@@ -97,7 +97,31 @@ router.get('/books/:id', async (req, res) => {
 // Purchase credits
 router.post('/purchase-credits', PaymentController.purchaseCredits);
 router.post('/confirm-purchase', PaymentController.confirmPurchase);
-router.post('/stripe-webhook', express.raw({ type: 'application/json' }), PaymentController.handleWebhook);
+//router.post('/stripe-webhook', express.raw({ type: 'application/json' }), PaymentController.handleWebhook);
+// Stripe Webhook endpoint
+router.post(
+  '/stripe-webhook',
+  express.raw({ type: 'application/json' }), // Middleware to parse raw body
+  async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    console.log("Entered webhook.");
+    try {
+      const event = stripe.webhooks.constructEvent(
+        req.body, // Raw body required
+        sig,
+        process.env.STRIPE_WEBHOOK_SECRET // Your webhook secret
+      );
+      console.log("Created event.");
+      // Pass the verified event to the controller
+      await PaymentController.handleWebhook(event);
+
+      res.status(200).send('Webhook received and processed successfully');
+    } catch (err) {
+      console.error('Webhook Error:', err.message);
+      res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+  }
+);
 
 
 // Record a book purchase
