@@ -11,7 +11,7 @@ const AuthorController = require('../controllers/AuthorController');
 const BankController = require('../controllers/BankController');
 const PaymentController = require('../controllers/PaymentController');
 const ContentController = require('../controllers/ContentController');
-
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // Use your Stripe secret key
 const db = require('../db'); // Database connection
 const router = express.Router();
 
