@@ -83,9 +83,9 @@ const CheckoutForm = () => {
 
 const CheckoutPage = () => {
   const [clientSecret, setClientSecret] = useState('');
-  const { totalPurchaseCredits, totalCost } = useContext(AuthContext);
+  const { totalPurchaseCredits, totalCost, user } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
     console.log('totalPurchaseCredits:', totalPurchaseCredits, 'totalCost:', totalCost);
 
@@ -94,7 +94,7 @@ const CheckoutPage = () => {
         const response = await fetchFromAPI('/purchase-credits', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ credits: totalPurchaseCredits, amount: totalCost }),
+          body: JSON.stringify({ userId: user.id, credits: totalPurchaseCredits, amount: totalCost }),
         });
         console.log('Response from /purchase-credits:', response);
         if (!response.ok) {
