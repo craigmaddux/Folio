@@ -15,7 +15,6 @@ import Footer from './components/Footer';
 import AuthorDashboard from './components/AuthorDashboard';
 import AuthorProfile from './components/AuthorProfile';
 import PurchaseCreditsPage from './components/PurchaseCreditsPage';
-import Yay from './components/Yay';
 import Checkout from './components/CheckoutPage';
 import PaymentSuccessPage from './components/PaymentSuccessPage'; 
 import MyAccount from './components/MyAccount';
