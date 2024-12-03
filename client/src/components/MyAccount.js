@@ -32,26 +32,13 @@ const AccountPage = () => {
 
   return (
     <div className="account-page">
-      <h2>Welcome, {user.username}!</h2>
+      <h2>Welcome!</h2>
       <div className="account-buttons">
         <button onClick={() => handleNavigation('/reset-password')}>Reset Password</button>
         <button onClick={() => handleNavigation('/view-orders')}>View Orders</button>
-        {!user.isAuthor && (
-          <button onClick={() => handleNavigation('/become-an-author')}>Become an Author</button>
-        )}
-        {user.isAuthor && (
-          <>
-            <button onClick={() => handleNavigation('/update-author-profile')}>
-              Update Author Profile
-            </button>
-            <button onClick={() => handleNavigation('/payout-details')}>
-              Payout Details
-            </button>
-            <button onClick={() => handleNavigation('/sales-details')}>
-              Sales Details
-            </button>
-          </>
-        )}
+        <button onClick={() => handleNavigation('/become-an-author')}>Become an Author</button>
+        
+       
       </div>
     </div>
   );
