@@ -10,15 +10,7 @@ const AccountPage = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        const response = await fetchFromAPI('/my-account', { method: 'GET' });
-        const data = await response.json();
-        setUser(data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setLoading(false);
-      }
+     
     };
 
     fetchUserData();
