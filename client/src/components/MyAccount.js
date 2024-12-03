@@ -4,7 +4,7 @@ import { fetchFromAPI } from './api';
 import './MyAccount.css';
 
 const AccountPage = () => {
-  const [user, setUser] = useState(null);
+  //const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
