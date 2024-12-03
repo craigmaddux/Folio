@@ -104,7 +104,7 @@ const CheckoutPage = () => {
         }
 
         const data = await response.json();
-        console.log('Data from /purchase-credits:', data);
+        
         setClientSecret(data.clientSecret);
       } catch (error) {
         console.error('Error fetching client secret:', error);

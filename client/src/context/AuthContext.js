@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthor, setIsAuthor] = useState(false);
   // eslint-disable-next-line 
-  const [totalPurchasedCredits, setPurchaseCredits] = useState(0); // Total credits
+  const [totalCredits, setCredits] = useState(0); // Total credits
   // eslint-disable-next-line 
   const [totalCost, setTotalCost] = useState(0); // Total cost
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkoutCredits = (creditAmount, cost) => {
     setTotalCost(cost);
-    setPurchaseCredits(creditAmount);
+    setCredits(creditAmount);
   };
   
 
