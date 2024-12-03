@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 // Configure CORS
 const corsOptions = {
-  origin: ['https://dev.leafquill.com', 'http://localhost:3000'], // Replace with your actual domains
+  origin: ['https://dev.leafquill.com', 'https://devapi.leafquill.com', 'http://localhost:3000'], // Replace with your actual domains
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,

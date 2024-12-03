@@ -4,7 +4,7 @@ const { validationResult } = require('express-validator');
 const db = require('../db'); 
 
 const crypto = require('crypto');
-const { sendVerificationEmail } = require('./utils/email.js');
+const { sendVerificationEmail } = require('../utils/email.js');
 
 const signup = async (req, res) => {
   console.log('Received request body:', req.body);

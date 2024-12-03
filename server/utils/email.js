@@ -33,4 +33,4 @@ const sendValidationEmail = async (to, validationCode) => {
 };
 
 
-module.exports = { sendEmail };
+module.exports = { sendValidationEmail };
