@@ -37,7 +37,7 @@ const signup = async (req, res) => {
     // Insert user with `isVerified` set to false
     console.log("Inserting user.");
     const result = await db.query(
-      'INSERT INTO users (username, email, password_hash, is_verified, verification_token) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+      'INSERT INTO users (username, email, password_hash, isVerified, verificationToken) VALUES ($1, $2, $3, $4, $5) RETURNING id',
       [username, email, passwordHash, false, verificationToken]
     );
     const userId = result.rows[0].id;
