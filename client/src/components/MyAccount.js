@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchFromAPI } from './api';
-import './AccountPage.css';
+import './MyAccount.css';
 
 const AccountPage = () => {
   const [user, setUser] = useState(null);
