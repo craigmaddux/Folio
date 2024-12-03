@@ -1,70 +1,118 @@
-# Getting Started with Create React App
+Folio: An Online Marketplace for Digital Books
+Folio is an online marketplace for buying and selling digital books. This repository contains both the React-based client application and the Node.js backend services, designed for deployment on Azure.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Project Structure
+plaintext
+Copy code
+Folio/
+├── client/            # Frontend React application
+│   ├── src/           # Source code for the React app
+│   ├── public/        # Public assets
+│   ├── package.json   # Frontend dependencies
+│   └── README.md      # React-specific README
+├── server/            # Backend Node.js application
+│   ├── src/           # API endpoints and services
+│   ├── config/        # Configuration files
+│   ├── package.json   # Backend dependencies
+│   └── README.md      # Backend-specific README
+├── .env               # Environment variables
+├── .gitignore         # Git ignored files
+├── README.md          # Project-level README (you are here)
+└── package.json       # Shared dependencies
+Getting Started
+Prerequisites
+Node.js (v14 or later)
+npm or yarn
+Azure CLI (for deployment)
+Azure Subscription (for hosting)
+Installation
+Clone the Repository
+bash
+Copy code
+git clone https://github.com/craigmaddux/Folio.git
+cd Folio
+Install Dependencies
+For the Frontend:
+bash
+Copy code
+cd client
+npm install
+For the Backend:
+bash
+Copy code
+cd ../server
+npm install
+Running the Application Locally
+Start the Backend Server
+Navigate to the server folder:
+bash
+Copy code
+cd server
+Start the server:
+bash
+Copy code
+npm start
+The backend server runs on http://localhost:5000 (default).
+Start the Frontend Client
+Navigate to the client folder:
+bash
+Copy code
+cd client
+Start the client:
+bash
+Copy code
+npm start
+The client app runs on http://localhost:3000 (default).
+Deployment
+Frontend: React Client
+The frontend is deployed to an Azure Static Web App. To deploy:
 
-## Available Scripts
+Build the React app:
+bash
+Copy code
+npm run build
+Deploy using the Azure CLI:
+bash
+Copy code
+az staticwebapp create --source ./build --name "FolioClient" --resource-group <YourResourceGroup>
+Backend: Node.js Server
+The backend is deployed as an Azure Web App. To deploy:
 
-In the project directory, you can run:
+Zip the backend files (excluding node_modules):
+bash
+Copy code
+zip -r server.zip .
+Deploy using the Azure CLI:
+bash
+Copy code
+az webapp deployment source config-zip --resource-group <YourResourceGroup> --name "FolioServer" --src server.zip
+Environment Variables
+Frontend (client/.env)
+Configure environment variables for the React app:
 
-### `npm start`
+env
+Copy code
+REACT_APP_API_BASE_URL=http://localhost:5000
+Backend (server/.env)
+Configure environment variables for the Node.js app:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+env
+Copy code
+PORT=5000
+DB_CONNECTION_STRING=<your_database_connection_string>
+Features
+Frontend:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+User-friendly interface for browsing and purchasing books.
+Built with React and deployed as a static web app on Azure.
+Backend:
 
-### `npm test`
+RESTful API for user management, book listings, and order processing.
+Node.js + Express backend with integration to a database.
+You can now copy and paste this into the README.md file in your GitHub repository! Let me know if you’d like further edits or additions. 😊
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
