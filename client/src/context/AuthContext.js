@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         totalCost,
-        totalPurchasedCredits,
+        totalCredits,
         checkoutCredits, // Expose function to update credits
       }}
     >
