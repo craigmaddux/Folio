@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './SignupForm.css';
 import { fetchFromAPI } from './api';
 
-const SignupForm = ({ isAuthor = false }) => {
+const SignupForm = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +14,7 @@ const SignupForm = ({ isAuthor = false }) => {
     specialChar: false,
   });
   const [isFormValid, setIsFormValid] = useState(false);
-  
+  const navigate = useNavigate();
 
   const validatePassword = (value) => {
     const hasNumber = /\d/.test(value);
@@ -31,7 +32,7 @@ const SignupForm = ({ isAuthor = false }) => {
 
     setIsFormValid(
       username &&
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && // Valid email format
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) &&
         isPasswordValid &&
         value === confirmPassword
     );
@@ -74,7 +75,7 @@ const SignupForm = ({ isAuthor = false }) => {
       return;
     }
 
-    const endpoint =  '/signup';
+    const endpoint = '/signup';
     const response = await fetchFromAPI(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -82,10 +83,7 @@ const SignupForm = ({ isAuthor = false }) => {
     });
 
     if (response.ok) {
-      alert(
-       
-          'User signed up successfully!'
-      );
+      navigate('/check-your-email');
     } else {
       alert('Signup failed. Please try again.');
     }
@@ -138,11 +136,8 @@ const SignupForm = ({ isAuthor = false }) => {
           </li>
         </ul>
       </div>
-      <label>
-       
-      </label>
       <button type="submit" disabled={!isFormValid}>
-        'Sign Up'
+        Sign Up
       </button>
     </form>
   );

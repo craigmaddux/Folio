@@ -99,6 +99,8 @@ router.post('/purchase-credits', PaymentController.purchaseCredits);
 router.post('/confirm-purchase', PaymentController.confirmPurchase);
 //router.post('/stripe-webhook', express.raw({ type: 'application/json' }), PaymentController.handleWebhook);
 
+//user verification
+router.get('/verify-email', UserController.validateEmail);
 
 
 // Record a book purchase

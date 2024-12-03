@@ -1,0 +1,64 @@
+/* General page styling */
+.verification-container {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 50px auto;
+    max-width: 500px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading styles */
+  .verification-container h2 {
+    color: #2d8cf0;
+    margin-bottom: 10px;
+    font-size: 24px;
+  }
+  
+  /* Paragraph styles */
+  .verification-container p {
+    color: #333;
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  /* Loading text */
+  .loading-text {
+    font-size: 18px;
+    color: #888;
+  }
+  
+  /* Success state */
+  .success-message {
+    color: #28a745;
+    font-size: 18px;
+  }
+  
+  /* Error state */
+  .error-message {
+    color: #dc3545;
+    font-size: 18px;
+  }
+  
+  /* Button styles (if needed later) */
+  .button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #2d8cf0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #1a6eb5;
+  }
+  

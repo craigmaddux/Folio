@@ -21,6 +21,8 @@ import PaymentSuccessPage from './components/PaymentSuccessPage';
 import MyAccount from './components/MyAccount';
 import RouteLogger from './components/RouteLogger';
 import BankDetailsPage from './components/BankDetailsWidget';
+import CheckYourEmail from './components/CheckYourEmail';
+import VerificationPage from './components/VerificationPage'
 
 
 function AppContent() {
@@ -33,7 +35,8 @@ function AppContent() {
       <Header /> {/* Header is displayed on all pages */}
       <div className="main-content">
         <Routes>
-        <Route path="/yay" element={<Yay />} />
+          <Route path="/check-your-email" element={<CheckYourEmail />} />
+          <Route path="/verify-email" element={<VerificationPage />} />
           <Route path="/" element={<Home />} />
           console.log(BankDetailsPage);
           <Route path="/author-bank-details" element={<BankDetailsPage />} />
