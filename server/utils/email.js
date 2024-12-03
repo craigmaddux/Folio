@@ -6,7 +6,7 @@ const LOGIC_APP_URL = 'https://prod-18.eastus2.logic.azure.com:443/workflows/efd
 
 
 // Function to send an email
-const sendValidationEmail = async (to, validationCode) => {
+const sendVerificationEmail = async (to, validationCode) => {
   try {
     
     // JSON Payload
@@ -33,4 +33,4 @@ const sendValidationEmail = async (to, validationCode) => {
 };
 
 
-module.exports = { sendValidationEmail };
+module.exports = { sendVerificationEmail };
