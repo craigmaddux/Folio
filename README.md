@@ -45,33 +45,41 @@ npm install
 Running the Application Locally
 Start the Backend Server
 Navigate to the server folder:
+
 bash
 Copy code
 cd server
 Start the server:
+
 bash
 Copy code
 npm start
 The backend server runs on http://localhost:5000 (default).
+
 Start the Frontend Client
 Navigate to the client folder:
+
 bash
 Copy code
 cd client
 Start the client:
+
 bash
 Copy code
 npm start
 The client app runs on http://localhost:3000 (default).
+
 Deployment
 Frontend: React Client
 The frontend is deployed to an Azure Static Web App. To deploy:
 
 Build the React app:
+
 bash
 Copy code
 npm run build
 Deploy using the Azure CLI:
+
 bash
 Copy code
 az staticwebapp create --source ./build --name "FolioClient" --resource-group <YourResourceGroup>
@@ -79,10 +87,12 @@ Backend: Node.js Server
 The backend is deployed as an Azure Web App. To deploy:
 
 Zip the backend files (excluding node_modules):
+
 bash
 Copy code
 zip -r server.zip .
 Deploy using the Azure CLI:
+
 bash
 Copy code
 az webapp deployment source config-zip --resource-group <YourResourceGroup> --name "FolioServer" --src server.zip
@@ -109,10 +119,3 @@ Backend:
 
 RESTful API for user management, book listings, and order processing.
 Node.js + Express backend with integration to a database.
-You can now copy and paste this into the README.md file in your GitHub repository! Let me know if you’d like further edits or additions. 😊
-
-
-
-
-
-
