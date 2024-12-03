@@ -84,7 +84,7 @@ const validateEmail = async (req, res) => {
 
     // Check if the token exists in the database
     const result = await db.query(
-      'SELECT id, verification_expires FROM users WHERE verification_token = $1',
+      'SELECT id, "verificationExpires" FROM users WHERE "verificationToken" = $1',
       [token]
     );
 
@@ -95,13 +95,13 @@ const validateEmail = async (req, res) => {
     const user = result.rows[0];
 
     // Check if the token has expired
-    if (user.verification_expires && new Date(user.verification_expires) < new Date()) {
-      return res.status(400).json({ message: 'Verification token has expired. Please request a new one.' });
-    }
+    //if (user.verification_expires && new Date(user.verification_expires) < new Date()) {
+    //  return res.status(400).json({ message: 'Verification token has expired. Please request a new one.' });
+    //}
 
     // Update the user's `isVerified` status and clear the token
     await db.query(
-      'UPDATE users SET is_verified = true, verification_token = NULL, verification_expires = NULL WHERE id = $1',
+      'UPDATE users SET "isVerified" = true, "verificationToken" = NULL, "verificationExpires" = NULL WHERE id = $1',
       [user.id]
     );
 
